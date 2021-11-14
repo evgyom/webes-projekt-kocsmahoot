@@ -96,6 +96,7 @@ html {
   display: flex;
   justify-content: space-evenly;
   margin-top: 5px;
+  margin-bottom: 0;
 }
 
 .navbar li {

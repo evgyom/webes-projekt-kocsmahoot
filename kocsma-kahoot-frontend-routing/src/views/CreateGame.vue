@@ -10,10 +10,8 @@
 </template>
 
 <script>
-import QuizListItem from "../../../kocsma-kahoot-frontend/src/components/smallItems/QuizListItem.vue";
-
-import list_of_quizzes_json from "../../assets/dummy_list_of_quizzes.json";
-//list_of_quizzes_json.forEach(x => { console.log(x.title, x.description); });
+import QuizListItem from "../components/QuizListItem.vue";
+import list_of_quizzes_json from "../assets/dummy_list_of_quizzes.json";
 
 export default {
   props: {},
