@@ -1,39 +1,39 @@
 <template>
-  <div id="enter-pin-component">
-    <h2>Enter your PIN below:</h2>
-    <div id="pin-enter-form">
+  <div>
+    <h2>{{$route.params.name}}</h2>
+    <h2>Enter the name of your team!</h2>
+    <div id="teamname-enter-form">
       <input type="text" />
-      <button>
-        <router-link style="text-decoration: none" to="/waiting-for-game-start-guest"
-          >GO!</router-link
-        >
-      </button>
+      <button><router-link style="text-decoration: none" :to="{name : 'WaitingForGameStartAdmin'}"
+      >START!</router-link></button>
     </div>
-    <p>You can get the game-PIN from the admin of your team.</p>
   </div>
 </template>
 
 <script>
+
 export default {
-  props: {},
+  props: {
+
+  },
+  components: {
+  },
+  data() {
+    return {
+    };
+  },
 };
 </script>
 
 <style scoped>
-#enter-pin-component {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  padding-top: 50px;
-  padding-bottom: 50px;
-}
-
-#pin-enter-form {
+#teamname-enter-form {
   display: flex;
   margin: auto;
   width: 35%;
+  padding-bottom: 50px;
 }
 
-#pin-enter-form input {
+#teamname-enter-form input{
   flex: 5;
   height: 100px;
   font-size: 80px;
@@ -44,7 +44,7 @@ export default {
   padding-bottom: 0;
 }
 
-#pin-enter-form button {
+#teamname-enter-form button{
   flex: 1;
   height: 100px;
   font-size: 50px;
@@ -58,4 +58,5 @@ export default {
 a{
   color: white;
 }
+
 </style>

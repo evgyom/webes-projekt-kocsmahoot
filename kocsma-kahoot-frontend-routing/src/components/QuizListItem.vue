@@ -2,9 +2,11 @@
 <template>
   <div class="quiz-list-item">
     <div>
-      <h2>{{ title }}</h2>
-      <button>Start this quiz</button>
+      <p id="title">{{ title }}</p>
       <button @click="ToggleShowDescription">{{ ShowDescriptionText }}</button>
+      <button id = "start-button"><router-link style="text-decoration: none" :to="{name : 'EnterTeamName', params : {name : this.title}}"
+      >Start this quiz</router-link
+    ></button>
     </div>
     <p v-if="ShowDescription">{{ description }}</p>
   </div>
@@ -18,7 +20,6 @@ export default {
   },
   methods: {
     ToggleShowDescription() {
-      console.log("Showdescription value", this.ShowDescription)
       this.ShowDescription = !this.ShowDescription;
       if (this.ShowDescription) {
         this.ShowDescriptionText = "Hide description";
@@ -42,27 +43,46 @@ export default {
   border-color: white;
   border-width: 2px;
   display: block;
-  width: 60%;
+  width: 40%;
   margin: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 .quiz-list-item div {
   display: flex;
+  padding-left: 20px;
 }
 
 button {
-  height: 2rem;
-  font-size: 1rem;
-  flex: 1;
+  height: 70px;
+  font-size: 30px;
+  flex: 2;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 
-h2 {
-  font-size: 2rem;
+#start-button{
+  background-color: darkred;
+}
+
+#start-button a{
   color: white;
+}
+
+#title {
+  font-size: 50px;
   display: block;
   position: relative;
   text-align: left;
   flex: 5;
   margin: 0;
+  font-weight: bold;
+}
+
+p {
+  text-align: left;
 }
 </style>

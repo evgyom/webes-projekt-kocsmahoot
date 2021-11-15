@@ -1,9 +1,12 @@
 <template>
-  <div class="enter-pin-component">
-    <h1>Choose your Kocsmahoot</h1>
+  <div>
+    <h2>Choose your Kocsmahoot!</h2>
     <ul class="list-of-quizzes">
       <li v-for="item in list_of_quizzes" :key="item.title">
-        <quiz-list-item :title="item.title" :description="item.description"></quiz-list-item>
+        <quiz-list-item
+          :title="item.title"
+          :description="item.description"
+        ></quiz-list-item>
       </li>
     </ul>
   </div>
@@ -16,7 +19,7 @@ import list_of_quizzes_json from "../assets/dummy_list_of_quizzes.json";
 export default {
   props: {},
   components: {
-      QuizListItem
+    QuizListItem,
   },
   data() {
     return {
@@ -27,42 +30,11 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  font-size: 3rem;
-  text-align: center;
-  margin-top: 5 px;
+ul {
+  list-style-type: none;
 }
 
-.pin-enter-form {
-  display: flex;
-  margin: auto;
-  width: 50%;
+li {
+  margin-top: 10px;
 }
-
-.pin-enter-form input {
-  flex: 5;
-  height: 3rem;
-  font-size: 3rem;
-}
-
-.pin-enter-form button {
-  flex: 1;
-  height: 3rem;
-  font-size: 3rem;
-}
-
-p {
-  font-size: 1rem;
-  text-align: center;
-  margin-top: 5 px;
-}
-
-ul{
-  list-style-type:none
-}
-
-li{
-  margin-top: 5px;
-}
-
 </style>

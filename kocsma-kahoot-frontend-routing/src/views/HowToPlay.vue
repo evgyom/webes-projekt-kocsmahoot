@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>How to play this game?</h1>
+    <h2>How to play this game?</h2>
     <iframe
       src="https://www.youtube.com/embed/dQw4w9WgXcQ"
       title="YouTube video player"
@@ -20,11 +20,7 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  font-size: 3rem;
-  text-align: center;
-  margin-top: 5 px;
-}
+
 iframe {
   font-size: 1rem;
   display: block;

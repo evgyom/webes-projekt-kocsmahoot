@@ -4,6 +4,9 @@ import CreateGame from "../views/CreateGame.vue";
 import UploadGame from "../views/UploadGame.vue";
 import HowToPlay from "../views/HowToPlay.vue";
 import Leaderboard from "../views/Leaderboard.vue";
+import EnterTeamName from "../views/EnterTeamName.vue";
+import WaitingForGameStartAdmin from "../views/WaitingForGameStartAdmin.vue";
+import WaitingForGameStartGuest from "../views/WaitingForGameStartGuest.vue";
 
 
 const routes = [
@@ -16,6 +19,21 @@ const routes = [
     path: "/create-game",
     name: "CreateGame",
     component: CreateGame,
+  },
+  {
+    path: "/enter-team-name/:name",
+    name: "EnterTeamName",
+    component: EnterTeamName,
+  },
+  {
+    path: "/waiting-for-game-start-admin",
+    name: "WaitingForGameStartAdmin",
+    component: WaitingForGameStartAdmin,
+  },
+  {
+    path: "/waiting-for-game-start-guest",
+    name: "WaitingForGameStartGuest",
+    component: WaitingForGameStartGuest,
   },
   {
     path: "/upload-game",
