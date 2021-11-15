@@ -1,11 +1,16 @@
 <template>
   <div>
-    <h2>{{$route.params.name}}</h2>
+    <h2>{{ $route.params.name }}</h2>
     <h2>Enter the name of your team!</h2>
     <div id="teamname-enter-form">
       <input type="text" />
-      <button><router-link style="text-decoration: none" :to="{name : 'WaitingForGameStartAdmin'}"
-      >START!</router-link></button>
+      <button @click="SetGameStarted">
+        <router-link
+          style="text-decoration: none"
+          :to="{ name: 'WaitingForGameStartAdmin' }"
+          >START!</router-link
+        >
+      </button>
     </div>
   </div>
 </template>
@@ -16,7 +21,10 @@ export default {
   props: {
 
   },
-  components: {
+  methods: {
+    SetGameStarted() {
+      this.$store.commit('setGameStarted');
+    }
   },
   data() {
     return {
@@ -33,7 +41,7 @@ export default {
   padding-bottom: 50px;
 }
 
-#teamname-enter-form input{
+#teamname-enter-form input {
   flex: 5;
   height: 100px;
   font-size: 80px;
@@ -44,7 +52,7 @@ export default {
   padding-bottom: 0;
 }
 
-#teamname-enter-form button{
+#teamname-enter-form button {
   flex: 1;
   height: 100px;
   font-size: 50px;
@@ -55,8 +63,7 @@ export default {
   background-color: darkred;
 }
 
-a{
+a {
   color: white;
 }
-
 </style>

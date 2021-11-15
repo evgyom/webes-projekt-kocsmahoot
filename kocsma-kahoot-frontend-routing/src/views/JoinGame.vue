@@ -3,7 +3,7 @@
     <h2>Enter your PIN below:</h2>
     <div id="pin-enter-form">
       <input type="text" />
-      <button>
+      <button @click="SetGameStarted">
         <router-link style="text-decoration: none" to="/waiting-for-game-start-guest"
           >GO!</router-link
         >
@@ -16,6 +16,11 @@
 <script>
 export default {
   props: {},
+  methods: {
+    SetGameStarted() {
+      this.$store.commit('setGameStarted');
+    }
+  },
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Kocsmahoot</h1>
-    <div id="nav">
+    <div v-if="!this.$store.getters.getGameStartedState" id="nav">
       <router-link style="text-decoration: none" to="/">JOIN GAME</router-link>
       |
       <router-link style="text-decoration: none" to="/create-game"
@@ -20,10 +20,30 @@
         >LEADERBOARD</router-link
       >
     </div>
+    <div v-else id="nav"></div>
     <router-view />
     <div id="footer">© copyright 2010 Sütő Zoltán</div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      ShowNavBar: true,
+    };
+  },
+  /*
+  watch: {
+    $route(to, from) {
+      if (this.$store.getters.getGameStartedState) {
+        this.ShowNavBar = false;
+      }
+    },
+  },*/
+};
+</script>
+
 
 <style>
 #app {

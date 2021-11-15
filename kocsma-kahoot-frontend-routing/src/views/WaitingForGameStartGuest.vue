@@ -1,6 +1,7 @@
 <template>
   <div id="holder">
     <h2>Waiting for the game to start.</h2>
+    <h2>PIN: {{PIN}}</h2>
     <div id="spinner-holder">
       <half-circle-spinner
         id="spinner"
@@ -9,7 +10,7 @@
         :color="'#000000'"
       />
     </div>
-    <button>Cancel</button>
+    <button @click="navigateBack">Cancel</button>
   </div>
 </template>
 
@@ -18,13 +19,33 @@ import { HalfCircleSpinner } from "epic-spinners";
 
 export default {
   components: {
-    HalfCircleSpinner
+    HalfCircleSpinner,
+  },
+  beforeRouteLeave(to, from, next) {
+    const answer = window.confirm(
+      "Do you really want to leave?"
+    );
+    if (answer) {
+      next();
+      this.$store.commit('unsetGameStarted');
+    } else {
+      next(false);
+    }
+  },
+  methods: {
+    navigateBack() {
+      history.back()
+    }
+  },
+  data() {
+    return {
+      PIN: null,
+    };
   },
 };
 </script>
 
 <style scoped>
-
 #holder {
   margin-top: 30px;
   margin-bottom: 30px;
@@ -45,11 +66,10 @@ export default {
   margin: auto;
 }
 
-button{
+button {
   display: block;
   margin: auto;
   width: 8%;
   font-size: 30px;
 }
-
 </style>
