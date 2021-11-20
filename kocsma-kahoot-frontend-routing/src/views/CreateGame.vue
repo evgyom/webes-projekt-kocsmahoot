@@ -1,12 +1,12 @@
 <template>
   <div>
     <div v-if="!loaded">
-      <h2>Loading available quizzes...</h2>
+      <h2>{{ this.loadingText }}</h2>
     </div>
     <div v-if="loaded">
       <h2>Choose your Kocsmahoot!</h2>
       <ul class="list-of-quizzes">
-        <li v-for="item in list_of_quizzes" :key="item.title">
+        <li v-for="item in listOfQuizzes" :key="item.title">
           <quiz-list-item
             :title="item.title"
             :description="item.description"
@@ -19,6 +19,7 @@
 
 <script>
 import QuizListItem from "../components/QuizListItem.vue";
+let baseUrl = "";
 
 export default {
   props: {},
@@ -27,10 +28,11 @@ export default {
   },
   data() {
     return {
-      loaded: true,
+      loadingText: "Loading available quizzes...",
+      loaded: false,
       post: null,
       error: null,
-      list_of_quizzes: null,
+      listOfQuizzes: null,
     };
   },
   created() {
@@ -40,10 +42,16 @@ export default {
   },
   methods: {
     async fetchData() {
-      const response = await fetch("/quiz-list");
-      const message = await response.json();
-      this.list_of_quizzes = message.list;
-      this.loaded = true;
+      try{
+        const response = await fetch(baseUrl+"/quiz-list");
+        const message = await response.json();
+        this.listOfQuizzes = message.list;
+        this.loaded = true;
+      }
+      catch(err){
+        this.loadingText = "Can't load quiz list. Drink a beer instead!"
+        console.log(err)
+      } 
     },
   },
 };
