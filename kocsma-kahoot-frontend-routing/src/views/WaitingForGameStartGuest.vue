@@ -70,6 +70,7 @@ button {
   display: block;
   margin: auto;
   width: 8%;
+  min-width: 100px;
   font-size: 30px;
 }
 </style>

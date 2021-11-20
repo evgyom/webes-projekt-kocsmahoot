@@ -76,6 +76,7 @@ export default {
 button {
   display: block;
   margin: auto;
+  min-width: 100px;
   font-size: 30px;
   margin-left: 10px;
   margin-right: 10px;

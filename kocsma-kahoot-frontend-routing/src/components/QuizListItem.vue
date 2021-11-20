@@ -3,7 +3,7 @@
   <div class="quiz-list-item">
     <div>
       <p id="title">{{ title }}</p>
-      <button @click="ToggleShowDescription">{{ ShowDescriptionText }}</button>
+      <button id = "desc-button" @click="ToggleShowDescription">{{ ShowDescriptionText }}</button>
       <button id = "start-button"><router-link style="text-decoration: none" :to="{name : 'EnterTeamName', params : {name : this.title}}"
       >Start this quiz</router-link
     ></button>
@@ -43,7 +43,7 @@ export default {
   border-color: white;
   border-width: 2px;
   display: block;
-  width: 40%;
+  width: 70%;
   margin: auto;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -57,8 +57,9 @@ export default {
 }
 
 button {
-  height: 70px;
-  font-size: 30px;
+  height: 50px;
+  min-width: 250px;
+  font-size: 20px;
   flex: 2;
   margin-right: 10px;
   margin-left: 10px;
@@ -73,7 +74,7 @@ button {
 }
 
 #title {
-  font-size: 50px;
+  font-size: 30px;
   display: block;
   position: relative;
   text-align: left;

@@ -55,14 +55,14 @@ export default {
 }
 
 h1 {
-  font-size: 120px;
+  font-size: 80px;
 }
 
 /*NAVBAR*/
 
 #nav {
   padding: 30px;
-  font-size: 40px;
+  font-size: 30px;
   display: block;
   background-color: lightgrey;
 }
@@ -83,12 +83,12 @@ nav li:hover {
 /*CONTENT*/
 
 h2 {
-  font-size: 60px;
+  font-size: 50px;
   text-align: center;
 }
 
 p {
-  font-size: 30px;
+  font-size: 20px;
 }
 
 button {
