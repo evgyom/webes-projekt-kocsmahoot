@@ -7,6 +7,7 @@ import Leaderboard from "../views/Leaderboard.vue";
 import EnterTeamName from "../views/EnterTeamName.vue";
 import WaitingForGameStartAdmin from "../views/WaitingForGameStartAdmin.vue";
 import WaitingForGameStartGuest from "../views/WaitingForGameStartGuest.vue";
+import Question from "../views/Question.vue";
 
 
 const routes = [
@@ -50,6 +51,11 @@ const routes = [
     name: "Leaderboard",
     component: Leaderboard,
   },
+  {
+    path: "/question",
+    name: "Question",
+    component: Question,
+  }
 ];
 
 const router = createRouter({

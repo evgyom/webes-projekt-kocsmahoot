@@ -11,8 +11,8 @@
       />
     </div>
     <div id="buttons-holder">
-      <button id="start-button">Start</button
-      ><button @click="navigateBack" id="cancel-button">Cancel</button>
+      <button @click="$router.push('/question')" id="start-button">Start</button>
+      <button @click="navigateBack" id="cancel-button">Cancel</button>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     const answer = window.confirm("Do you really want to leave?");
-    if (answer) {
+    if (answer && to.name != "Question") {
       next();
       this.$store.commit("unsetGameStarted");
     } else {
@@ -36,7 +36,7 @@ export default {
   methods: {
     navigateBack() {
       history.back();
-    },
+    }
   },
   data() {
     return {
