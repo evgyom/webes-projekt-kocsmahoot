@@ -11,6 +11,7 @@
           >GO!</router-link
         >
       </button>
+      <router-link @click="SetGameStarted" to="/waiting-for-game-start-guest" tag="button">foo</router-link>
       </div>
     </div>
     <p>You can get the game-PIN from the admin of your team.</p>
