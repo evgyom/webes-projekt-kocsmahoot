@@ -1,0 +1,23 @@
+[
+    {
+        "question": "Zene nélkül mit érek én?",
+        "type": "choice",
+        "answers": ["én", "én", "én", "Csontfájdító dzsúsz"],
+        "correct": 1
+    },
+    {
+        "question": "Igaz-e a következő állítás? A tyúk előbb volt, mint a tojás.",
+        "type": "tf",
+        "correct": false
+    },
+    {
+        "question": "Melyik évben született mindenki közös példaképe, Schmuck Andor?",
+        "type": "numeric",
+        "correct": 1970
+    },
+    {
+        "question": "",
+        "type": "text",
+        "correct": 1974
+    }
+]
