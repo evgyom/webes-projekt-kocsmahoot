@@ -1,7 +1,7 @@
 <template>
   <div id="holder">
     <h2>Waiting for guests to join.</h2>
-    <h2>PIN: {{PIN}}</h2>
+    <h2>PIN: {{ PIN }}</h2>
     <div id="spinner-holder">
       <half-circle-spinner
         id="spinner"
@@ -11,7 +11,11 @@
       />
     </div>
     <div id="buttons-holder">
-      <button @click="$router.push('/question')" id="start-button">Start</button>
+      <button id="start-button">
+        <router-link style="text-decoration: none" to="/question"
+          >Start</router-link
+        >
+      </button>
       <button @click="navigateBack" id="cancel-button">Cancel</button>
     </div>
   </div>
@@ -25,18 +29,23 @@ export default {
     HalfCircleSpinner,
   },
   beforeRouteLeave(to, from, next) {
-    const answer = window.confirm("Do you really want to leave?");
-    if (answer && to.name != "Question") {
+    console.log(to.path);
+    if (to.path == "/question") {
       next();
-      this.$store.commit("unsetGameStarted");
     } else {
-      next(false);
+      const answer = window.confirm("Do you really want to leave?");
+      if (answer) {
+        next();
+        this.$store.commit("unsetGameStarted");
+      } else {
+        next(false);
+      }
     }
   },
   methods: {
     navigateBack() {
       history.back();
-    }
+    },
   },
   data() {
     return {
@@ -85,5 +94,9 @@ button {
 #start-button {
   background-color: darkred;
   justify-self: right;
+}
+
+a {
+  color: white;
 }
 </style>

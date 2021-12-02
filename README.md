@@ -24,7 +24,7 @@
 * az assets/dist mappa helyére kell berkani a legfrissebb frontend fájlokat
 
 
-## Kommunikáció
+## Kommunikáció (req: kérés a klienstől, action: a szerver csinálja, res: a szerver ezt küldi)
 * CreateGame
     * req: /quiz-list
     * action: összeálíltáni az aktuális quizekből egy JSON-t
@@ -37,3 +37,8 @@
     * req: /pin
     * action: create session ID
     * res: send session ID (??)
+
+## Megoldandó szarságok
+* újratöltéskor befosódunk, mert a szerver nem tud jó választ adni a ./ize dolgokra.
+    * minden ilyen ./ize -re vissza mehetnénk a kezdőoldalra
+* a vissza gombra néha jobb lenne, ha máshova menne vissza (pl. nem az enter)

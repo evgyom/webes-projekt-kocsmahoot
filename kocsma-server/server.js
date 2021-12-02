@@ -17,6 +17,14 @@ app.get('/quiz-list', (req, res) => {
    });
 });
 
+app.get('/quiz-questions', (req, res) => {
+   fs.readFile('assets/static-json/dummy_questions.json', (err, data) => {
+      if (err) throw err;
+      let list_of_quizzes = JSON.parse(data);
+      res.json(list_of_quizzes);
+   });
+});
+
 app.listen(port, hostname, () => {
    console.log(`Server running at http://${hostname}:${port}/`);
 });
