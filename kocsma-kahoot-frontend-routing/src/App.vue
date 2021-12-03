@@ -33,14 +33,6 @@ export default {
       ShowNavBar: true,
     };
   },
-  /*
-  watch: {
-    $route(to, from) {
-      if (this.$store.getters.getGameStartedState) {
-        this.ShowNavBar = false;
-      }
-    },
-  },*/
 };
 </script>
 

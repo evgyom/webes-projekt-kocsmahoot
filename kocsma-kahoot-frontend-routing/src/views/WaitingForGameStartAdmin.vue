@@ -28,6 +28,7 @@
 
 <script>
 import { HalfCircleSpinner } from "epic-spinners";
+let baseUrl = "";
 
 export default {
   components: {
@@ -50,11 +51,15 @@ export default {
   data() {
     return {
       PIN: null,
+      loadingText: "Loading available quizzes...",
+      loaded: false,
+      post: null,
+      error: null,
     };
   },
   created() {
-    //Add the question ID to vuex
-    this.$store.commit("setQuizID", $route.params.quizID);
+    //Check the quizID
+    console.log("QuizID, "+String(this.$store.getters.getQuizID))
     this.fetchQuestionsAndPIN();
   },
   methods: {
@@ -70,16 +75,17 @@ export default {
           baseUrl +
           "/quiz-questions" +
           "?quizID=" +
-          String($route.params.quizID) +
+          String(this.$store.getters.getQuizID) +
           "&teamName=" +
-          $route.params.teamName;
+          this.$route.params.teamName;
         console.log("Requesting:" + request);
         const response = await fetch(request);
         const message = await response.json();
         //Store the questions in vuex
         this.$store.commit("loadQuestions", message.list);
         //Store the PIN
-        this.PIN = message.PIN;
+        this.PIN = message.pin;
+        console.log(this.Pin)
         this.loaded = true;
         console.log("loaded questions");
       } catch (err) {

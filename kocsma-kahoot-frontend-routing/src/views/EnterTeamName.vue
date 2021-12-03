@@ -11,7 +11,6 @@
             :to="{
               name: 'WaitingForGameStartAdmin',
               params: {
-                quizID: $route.params.quizID,
                 teamName: this.teamName,
               },
             }"
@@ -29,6 +28,8 @@ export default {
   methods: {
     SetGameStarted() {
       this.$store.commit("setGameStarted");
+      console.log("entered team name:", this.TeamName);
+      console.log("Navigating to --waitingforgamestartadmin--");
     },
   },
   data() {

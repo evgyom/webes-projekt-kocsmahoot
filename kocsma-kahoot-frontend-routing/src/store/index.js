@@ -4,7 +4,7 @@ export default createStore({
   state: {
     GameStarted: false,
     QuizID: null,
-    Questions
+    Questions: null
   },
   mutations: {
     setGameStarted(state){

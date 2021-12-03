@@ -5,10 +5,10 @@
       <button id="desc-button" @click="ToggleShowDescription">
         {{ ShowDescriptionText }}
       </button>
-      <button id="start-button">
+      <button id="start-button" @click="saveQuizID">
         <router-link
           style="text-decoration: none"
-          :to="{ name: 'EnterTeamName', params:{name: this.title, quizID: this.$props.quizID}}"
+          :to="{ name: 'EnterTeamName', params:{name: this.title}}"
           >Start this quiz</router-link
         >
       </button>
@@ -20,7 +20,7 @@
 <script>
 export default {
   props: {
-    questionId: {required: true, type: Number},
+    quizID: {required: true, type: Number},
     title: { required: true, type: String },
     description: { required: true, type: String },
   },
@@ -33,6 +33,11 @@ export default {
         this.ShowDescriptionText = "Show description";
       }
     },
+    saveQuizID(){
+      //Add the question ID to vuex
+      console.log("Saving quizID to vuex:", this.$props.quizID)
+      this.$store.commit("setQuizID", this.$props.quizID);
+    }
   },
   data() {
     return {

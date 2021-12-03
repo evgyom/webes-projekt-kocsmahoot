@@ -13,8 +13,6 @@
 
 import QuestionItem from "../components/QuestionItem.vue";
 
-let baseUrl = "";
-
 export default {
   components: {
     QuestionItem,
@@ -29,26 +27,9 @@ export default {
     };
   },
   created() {
-    // fetch the data when the view is created and the data is
-    // already being observed
-    console.log("Fetching questions...")
-    this.fetchQuestions();
-  },
-  methods: {
-    async fetchQuestions() {
-      try {
-        const response = await fetch(baseUrl + "/quiz-questions");
-        const message = await response.json();
-        this.questions = message.list;
-        console.log(this.questions)
-        console.log(this.questions[0]["question"])
-        this.loaded = true;
-        console.log("loaded questions")
-      } catch (err) {
-        this.loadingText = "Can't load questions. Drink a beer instead!";
-        console.log(err);
-      }
-    },
+    //Load questions from Vuex
+    this.questions = this.$store.getters.getQuestions;
+    loaded = true;
   },
 };
 </script>
