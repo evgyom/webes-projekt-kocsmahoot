@@ -24,19 +24,33 @@
 * az assets/dist mappa helyére kell berkani a legfrissebb frontend fájlokat
 
 
-## Kommunikáció (req: kérés a klienstől, action: a szerver csinálja, res: a szerver ezt küldi)
-* CreateGame
-    * req: /quiz-list
-    * action: összeálíltáni az aktuális quizekből egy JSON-t
-    * res: quizek neve és a leírása
-* EnterTeamName
-    * req: /team-name (in the URL)
-    * action: store team name, generate PIN, store PIN
-    * res: send PIN to admin
-* JoinGame
-    * req: /pin
-    * action: create session ID
-    * res: send session ID (??)
+## Kommunikáció
+
+* /quiz-list 
+    * összes quizhez küld
+    * ID, name, description
+
+* /quiz-questions?quizID=xxxxx&teamName=xxxxxxxxx_xxxx
+    * elküldi a szervernek a quiz-id-t és a team-name-et
+    * a szerver visszaküldi:
+        * adott quiz össze kérdéséhez: question-id, layout-id, kérdés, válasz1, válasz2, válasz3, válasz4
+        * PIN
+
+* /join-game?game-pin=953353133215
+    * egy guest akar csatlakozni a játékhoz
+    * a szerver visszaadja:
+        * adott quiz össze kérdéséhez: question-id, layout-id, kérdés, válasz1, válasz2, válasz3, válasz4
+        * aktuális kérdés
+
+* /submit-quiz
+    * ez egy POST request lesz
+    * küld egy JSON-t:
+        * PIN, valaszok
+
+* /get-leaderboard
+    * az összes eddigi eredményt elkéri
+    * szerver visszaadja:
+        * 
 
 ## Megoldandó szarságok
 * újratöltéskor befosódunk, mert a szerver nem tud jó választ adni a ./ize dolgokra.

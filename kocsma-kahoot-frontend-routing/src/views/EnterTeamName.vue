@@ -4,11 +4,17 @@
     <h2>Enter the name of your team!</h2>
     <div id="teamname-enter-form">
       <div>
-        <input type="text" />
+        <input type="text" v-model="this.TeamName" />
         <button @click="SetGameStarted">
           <router-link
             style="text-decoration: none"
-            :to="{ name: 'WaitingForGameStartAdmin' }"
+            :to="{
+              name: 'WaitingForGameStartAdmin',
+              params: {
+                quizID: $route.params.quizID,
+                teamName: this.teamName,
+              },
+            }"
             >GO!</router-link
           >
         </button>
@@ -26,7 +32,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      TeamName: null,
+    };
   },
 };
 </script>
@@ -39,9 +47,9 @@ export default {
   padding-bottom: 50px;
 }
 
-#teamname-enter-form div{
+#teamname-enter-form div {
   display: flex;
-  justify-content:center
+  justify-content: center;
 }
 
 input {

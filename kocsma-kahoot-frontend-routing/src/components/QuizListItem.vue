@@ -1,12 +1,17 @@
-
 <template>
   <div class="quiz-list-item">
     <div>
       <p id="title">{{ title }}</p>
-      <button id = "desc-button" @click="ToggleShowDescription">{{ ShowDescriptionText }}</button>
-      <button id = "start-button"><router-link style="text-decoration: none" :to="{name : 'EnterTeamName', params : {name : this.title}}"
-      >Start this quiz</router-link
-    ></button>
+      <button id="desc-button" @click="ToggleShowDescription">
+        {{ ShowDescriptionText }}
+      </button>
+      <button id="start-button">
+        <router-link
+          style="text-decoration: none"
+          :to="{ name: 'EnterTeamName', params:{name: this.title, quizID: this.$props.quizID}}"
+          >Start this quiz</router-link
+        >
+      </button>
     </div>
     <p v-if="ShowDescription">{{ description }}</p>
   </div>
@@ -15,6 +20,7 @@
 <script>
 export default {
   props: {
+    questionId: {required: true, type: Number},
     title: { required: true, type: String },
     description: { required: true, type: String },
   },
@@ -65,11 +71,11 @@ button {
   margin-left: 10px;
 }
 
-#start-button{
+#start-button {
   background-color: darkred;
 }
 
-#start-button a{
+#start-button a {
   color: white;
 }
 

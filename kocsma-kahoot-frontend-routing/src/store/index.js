@@ -2,7 +2,9 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    GameStarted: false
+    GameStarted: false,
+    QuizID: null,
+    Questions
   },
   mutations: {
     setGameStarted(state){
@@ -11,11 +13,19 @@ export default createStore({
     },
     unsetGameStarted(state){
       state.GameStarted = false;
+    },
+    setQuizID(state, ID){
+      state.QuizID = ID;
+    },
+    loadQuestions(state, questions){
+      state.Questions = questions;
     }
   },
   actions: {},
   modules: {},
   getters: {
-    getGameStartedState: state => state.GameStarted
+    getGameStartedState: state => state.GameStarted,
+    getQuizID: state => state.QuizID,
+    getQuestions: state => state.Questions
   }
 });

@@ -8,6 +8,7 @@
       <ul class="list-of-quizzes">
         <li v-for="item in listOfQuizzes" :key="item.title">
           <quiz-list-item
+            :questionId="item.id"
             :title="item.title"
             :description="item.description"
           ></quiz-list-item>
