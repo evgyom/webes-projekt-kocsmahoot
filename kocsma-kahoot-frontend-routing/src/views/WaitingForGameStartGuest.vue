@@ -1,7 +1,6 @@
 <template>
   <div id="holder">
     <h2>Waiting for the game to start.</h2>
-    <h2>PIN: {{PIN}}</h2>
     <div id="spinner-holder">
       <half-circle-spinner
         id="spinner"
@@ -39,7 +38,6 @@ export default {
   },
   data() {
     return {
-      PIN: null,
     };
   },
 };

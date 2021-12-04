@@ -3,15 +3,8 @@
     <h2>Enter your PIN below:</h2>
     <div id="pin-enter-form">
       <div>
-      <input type="text" />
-      <button @click="SetGameStarted">
-        <router-link
-          style="text-decoration: none"
-          to="/waiting-for-game-start-guest"
-          >GO!</router-link
-        >
-      </button>
-      <router-link @click="SetGameStarted" to="/waiting-for-game-start-guest" tag="button">foo</router-link>
+        <input type="text" v-model="this.PIN" />
+        <button @click="goButtonPushed">GO!</button>
       </div>
     </div>
     <p>You can get the game-PIN from the admin of your team.</p>
@@ -19,12 +12,29 @@
 </template>
 
 <script>
+
+let baseUrl = "";
+
 export default {
   props: {},
   methods: {
-    SetGameStarted() {
+    async goButtonPushed() {
+      try {
+        // /join-game?pin=953353133215
+        let request = baseUrl + "join-game?pin=" + String(this.PIN);
+        console.log("Requesting:" + request);
+        const response = await fetch(request);
+        console.log(response);
+      } catch (err) {
+        console.log(err);
+      }
       this.$store.commit("setGameStarted");
     },
+  },
+  data() {
+    return {
+      PIN: null,
+    };
   },
 };
 </script>
@@ -43,9 +53,9 @@ export default {
   width: 60%;
 }
 
-#pin-enter-form div{
+#pin-enter-form div {
   display: flex;
-  justify-content:center
+  justify-content: center;
 }
 
 input {

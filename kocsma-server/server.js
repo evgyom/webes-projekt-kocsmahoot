@@ -4,7 +4,7 @@ var serveStatic = require('serve-static');
 const fs = require('fs');
 var mysql = require('mysql');
 const util = require('util');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 
 var config = {
    host: "localhost",
@@ -20,14 +20,38 @@ const mydb = makeDb(config);
    password: "w5&D9]3["
 });*/
 
-
- 
 app = express();
 var jsonParser = bodyParser.json();
 
 app.use(serveStatic("assets/dist"));
 var port = process.env.PORT || 8080;
 var hostname = '127.0.0.1';
+
+// /active-question?pin=953353133215&questionID=5
+app.get('/active-question', (req, res) => {
+   console.log("active question indication received")
+   console.log("PIN", req.query.pin)
+   console.log("questionID", req.query.questionID)
+   mydb.query("UPDATE activeQuiz SET activeQuestion="+mysql.escape(req.query.questionID)+" WHERE Pin="+ mysql.escape(req.query.pin));
+   res.send("OK")
+});
+
+// /cancel?pin=953353133215
+app.post('/cancel', (req, res) => {
+   console.log("cancel request received")
+   console.log("PIN", req.query.pin)
+   mydb.query("DELETE FROM activeQuiz WHERE Pin="+ mysql.escape(req.query.pin));
+   res.send("CANCELLED")
+});
+
+// /submit-quiz
+app.post('/submit-quiz', jsonParser, (req, res) => {
+   console.log("guiz submitted")
+   console.log(req.body)
+   res.json({
+      "result" : 0.8
+   });
+});
 
 app.get('/quiz-list', (req, res) => {
    var o = {} // empty Object
@@ -37,8 +61,7 @@ app.get('/quiz-list', (req, res) => {
       if (err) throw err;
       Object.keys(result).forEach(function (key) {
          var row = result[key];
-         
-var data = {
+         var data = {
             id: row.id,
             title: row.name,
             description: row.description
@@ -59,7 +82,7 @@ app.get('/quiz-questions', function (req, res) {
          pin = getRandomInt();
          var count = 1;
          const otherRows = await mydb.query("SELECT COUNT(*) AS pinCount FROM activeQuiz WHERE Pin=" + mysql.escape(pin));
-         console.log(otherRows[0].pinCount);
+         //console.log(otherRows[0].pinCount);
          count = otherRows[0].pinCount;
       } while (count != 0);
 
@@ -67,7 +90,7 @@ app.get('/quiz-questions', function (req, res) {
       var pinKey = "pin";
       o[pinKey] = pin;
       //Save team into activeQuiz
-      const insertRows = await mydb.query("INSERT INTO activeQuiz (Pin,teamName,quizID) VALUES ?", [[[pin, req.query.teamName, req.query.quizID]]]);
+      const insertRows = await mydb.query("INSERT INTO activeQuiz (Pin,teamName,quizID) VALUES ?", [[[pin, req.query.teamName, req.query.quizID,0]]]);
 
       //generate questions list
       var listKey = "list";
@@ -90,30 +113,6 @@ app.get('/quiz-questions', function (req, res) {
       });
       res.json(o);
    })();
-});
-
-// /active-question?pin=953353133215&questionID=5
-app.get('/active-question', (req, res) => {
-   console.log("active question indication received")
-   console.log("PIN", req.query.pin)
-   console.log("questionID", req.query.questionID)
-   res.send("OK")
-});
-
-// /cancel?pin=953353133215
-app.post('/cancel', (req, res) => {
-   console.log("cancel request received")
-   console.log("PIN", req.query.pin)
-   res.send("CANCELLED")
-});
-
-// /submit-quiz
-app.post('/submit-quiz', jsonParser, (req, res) => {
-   console.log("guiz submitted")
-   console.log(req.body)
-   res.json({
-      "result" : 0.8
-   });
 });
 
 app.get('/join-game', (req, res) => {
@@ -160,7 +159,32 @@ app.get('/join-game', (req, res) => {
 app.get('/get-leaderboard', (req, res) => {
    (async () => {
       var o = {} // empty Object
+      //var row = idRows[key];
+      const selectRows = await mydb.query("SELECT * FROM leaderboard ORDER BY quizID, score DESC");
+      console.log(selectRows);
 
+      var listKey;
+      var count = 0;
+      var prevID = 0;
+      Object.keys(selectRows).forEach(function (key) {
+         var row = selectRows[key];
+         //console.log(row)
+         if (prevID != row.quizID) {
+            listKey = "quiz" + row.quizID;
+            o[listKey] = [];
+            prevID = row.quizID;
+            count = 0;
+         }
+         if (count < 3) {
+            var data = {
+               TeamName: row.TeamName,
+               score: row.score
+            };
+            o[listKey].push(data);
+            count++;
+         }
+      });
+      res.json(o);
    })();
 });
 
@@ -171,11 +195,9 @@ app.listen(port, hostname, () => {
       console.log("Database created");
       const result2 = await mydb.query("USE mydb");
       console.log("Database used");
-      /*var sql = "DROP TABLE quizList";
-      con.query(sql, function (err, result) {
-         if (err) throw err;
-         console.log("Droped");
-      });*/
+
+      /*const result32= mydb.query("DROP TABLE activeQuiz");
+      console.log("Droped");*/
 
       //quizList
       const result3 = await mydb.query("SELECT COUNT(*) AS namesCount FROM information_schema.tables WHERE table_schema = 'mydb' AND table_name = 'quizList'");
@@ -201,7 +223,7 @@ app.listen(port, hostname, () => {
       const result9 = await mydb.query("SELECT COUNT(*) AS namesCount FROM information_schema.tables WHERE table_schema = 'mydb' AND table_name = 'activeQuiz'");
       //console.log(result[0].namesCount);
       if (result9[0].namesCount == 0) {
-         const result10 = await mydb.query("CREATE TABLE activeQuiz (Pin INT PRIMARY KEY, TeamName VARCHAR(255), quizID INT)")
+         const result10 = await mydb.query("CREATE TABLE activeQuiz (Pin INT PRIMARY KEY, TeamName VARCHAR(255), quizID INT, activeQuestion INT)")
          console.log("Table activeQuiz created");
       }
 
@@ -227,7 +249,7 @@ var quizek = [
 
 var kerdesek = [
    [1, 0, "Zene nélkül mit érek én?", "én", "én", "én", "Csontfájdító dzsúsz", 4],
-   [1, 1, "Igaz-e a következő állítás? A tyúk előbb volt, mint a tojás.", null, null, null, null, 1],
+   [1, 1, "Igaz-e a következő állítás? A tyúk előbb volt, mint a tojás.", null, null, null, null, 0],
    [1, 2, "Melyik évben született mindenki közös példaképe, Schmuck Andor?", null, null, null, null, 1970]
 ];
 
@@ -236,7 +258,11 @@ var csapatok = [
    ["Team2", 1, 30],
    ["Team3", 1, 20],
    ["Team4", 1, 13],
-   ["Team5", 1, 5]
+   ["Team5", 1, 5],
+   ["Team6", 2, 13],
+   ["Team7", 2, 64],
+   ["Team8", 3, 43],
+   ["Team9", 3, 23],
 ];
 
 function getRandomInt() {
