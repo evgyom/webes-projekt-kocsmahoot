@@ -90,7 +90,7 @@ app.get('/quiz-questions', function (req, res) {
       var pinKey = "pin";
       o[pinKey] = pin;
       //Save team into activeQuiz
-      const insertRows = await mydb.query("INSERT INTO activeQuiz (Pin,teamName,quizID) VALUES ?", [[[pin, req.query.teamName, req.query.quizID,0]]]);
+      const insertRows = await mydb.query("INSERT INTO activeQuiz (Pin,teamName,quizID,activeQuestion) VALUES ?", [[[pin, req.query.teamName, req.query.quizID,0]]]);
 
       //generate questions list
       var listKey = "list";

@@ -54,6 +54,11 @@ Minden request egy get
         * aktuális kérdés
     * valid-pin = 1 // valid-pin = 0
 
+* /current-question?pin=953353133215
+    * a guest kéri le a szervertől az aktuális kérdés id-t
+    * válasz:
+        * active question-id
+
 * /active-question?pin=953353133215&questionID=5
     * ez egy jelzés a szervernek az admin klienstől
     * válasz:

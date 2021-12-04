@@ -24,11 +24,20 @@ export default {
         let request = baseUrl + "join-game?pin=" + String(this.PIN);
         console.log("Requesting:" + request);
         const response = await fetch(request);
-        console.log(response);
+        const message = await response.json();
+        if(message.validPin == 1){
+          //Store the questions in vuex
+          this.$store.commit("loadQuestions", message.list);
+          //Set game started
+          this.$store.commit("setGameStarted");
+          //Navigate to WaitingForGameStartGuest
+          this.$router.push({ name: 'WaitingForGameStartGuest'})
+        }else{
+          this.PIN = "Invalid PIN"
+        }
       } catch (err) {
         console.log(err);
       }
-      this.$store.commit("setGameStarted");
     },
   },
   data() {

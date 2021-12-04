@@ -110,20 +110,9 @@ export default {
   props: {
     inputQuestions: { required: true },
   },
-  async created() {
+  created() {
     this.questions = this.$props.inputQuestions;
     this.noOfQuestions = this.questions.length;
-    //indicate that the game was started
-    let request =
-      baseUrl +
-      "/active-question" +
-      "?pin=" +
-      String(this.$store.getters.getPIN) +
-      "&questionID=" +
-      String(this.questions[0]["questionID"]);
-    console.log("Requesting:" + request);
-    const response = await fetch(request);
-    console.log(response);
   },
   data() {
     return {
@@ -168,8 +157,8 @@ export default {
         if (this.questionNumber == this.noOfQuestions - 1) {
           console.log("Finished quiz");
           let bodyOfRequest = JSON.stringify({
-            pin: this.$store.getters.getPIN,
-            answers: this.collectedAnswers,
+            "pin": this.$store.getters.getPIN,
+            "answers": this.collectedAnswers,
           });
           console.log("Body of request", bodyOfRequest);
           const response = await fetch(baseUrl + "/submit-quiz", {

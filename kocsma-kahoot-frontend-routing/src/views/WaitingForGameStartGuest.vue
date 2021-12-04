@@ -9,7 +9,11 @@
         :color="'#000000'"
       />
     </div>
-    <button @click="navigateBack">Cancel</button>
+    <div>
+      <button id="button-refresh" @click="refresh">Refresh</button>
+      <button id="button-cancel" @click="navigateBack">Cancel</button>
+    </div>
+    
   </div>
 </template>
 
@@ -34,6 +38,9 @@ export default {
   methods: {
     navigateBack() {
       history.back()
+    },
+    async refresh(){
+      
     }
   },
   data() {
@@ -64,9 +71,18 @@ export default {
   margin: auto;
 }
 
-button {
+#button-cancel {
   display: block;
   margin: auto;
+  width: 8%;
+  min-width: 100px;
+  font-size: 30px;
+}
+
+#button-refresh{
+  display: block;
+  margin: auto;
+  background-color: navy;
   width: 8%;
   min-width: 100px;
   font-size: 30px;
