@@ -4,17 +4,17 @@
       <h2>{{ this.loadingText }}</h2>
     </div>
     <div v-if="loaded">
-      <question-item v-bind:inputQuestions="this.questions"> </question-item>
+      <question-guest-item v-bind:inputQuestions="this.questions"> </question-guest-item>
     </div>
   </div>
 </template>
 
 <script>
-import QuestionItem from "../components/QuestionItem.vue";
+import QuestionGuestItem from "../components/QuestionGuestItem.vue";
 
 export default {
   components: {
-    QuestionItem,
+    QuestionGuestItem,
   },
   data() {
     return {

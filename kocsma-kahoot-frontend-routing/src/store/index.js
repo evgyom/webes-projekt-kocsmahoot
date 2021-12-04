@@ -5,7 +5,8 @@ export default createStore({
     GameStarted: false,
     QuizID: null,
     Questions: null,
-    PIN: null
+    PIN: null,
+    BoardID: null,
   },
   mutations: {
     setGameStarted(state){
@@ -23,7 +24,10 @@ export default createStore({
     },
     updatePIN(state, PIN){
       state.PIN = PIN;
-    }
+    },
+    setBoardID(state, boardID){
+      state.BoardID = boardID;
+    },
   },
   actions: {},
   modules: {},
@@ -31,6 +35,7 @@ export default createStore({
     getGameStartedState: state => state.GameStarted,
     getQuizID: state => state.QuizID,
     getQuestions: state => state.Questions,
-    getPIN: state => state.PIN
+    getPIN: state => state.PIN,
+    getBoardID: state => state.BoardID
   }
 });

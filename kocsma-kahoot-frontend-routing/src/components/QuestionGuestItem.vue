@@ -97,8 +97,8 @@
       </div>
     </div>
 
-    <div id="submit-button-holder">
-      <button id="submit-button" @click="submit()">Submit</button>
+    <div id="refresh-button-holder">
+      <button id="refresh-button" @click="refresh()">Refresh</button>
     </div>
   </div>
 </template>
@@ -113,15 +113,13 @@ export default {
   created() {
     this.questions = this.$props.inputQuestions;
     this.noOfQuestions = this.questions.length;
+    this.refresh();
   },
   data() {
     return {
       questions: null,
       noOfQuestions: 0,
-      answer: -1,
-      collectedAnswers: [],
-      numericAns: 0,
-      questionNumber: 0,
+      questionNumber: 0
     };
   },
   computed: {},
@@ -129,69 +127,36 @@ export default {
     update(selected) {
       this.answer = selected;
     },
-    async submit() {
-      //check if a new answer was selected
-      if (
-        this.answer === -1 &&
-        this.questions[this.questionNumber]["layoutID"] != 2
-      ) {
-        window.alert("You have to enter an answer.");
-      } else {
-        if (this.questions[this.questionNumber]["layoutID"] == 2) {
-          console.log(this.numericAns);
-          this.collectedAnswers.push({
-            questionID: this.questions[this.questionNumber]["questionID"],
-            answer: this.numericAns,
-          });
-        } else {
-          console.log(this.answer);
-          this.collectedAnswers.push({
-            questionID: this.questions[this.questionNumber]["questionID"],
-            answer: this.answer,
-          });
-        }
-        //Clear answer
-        this.answer = -1;
-        //Display all the stored answers
-        console.log("All answers", this.collectedAnswers);
-        if (this.questionNumber == this.noOfQuestions - 1) {
-          console.log("Finished quiz");
-          let bodyOfRequest = JSON.stringify({
-            "pin": this.$store.getters.getPIN,
-            "answers": this.collectedAnswers,
-          });
-          console.log("Body of request", bodyOfRequest);
-          const response = await fetch(baseUrl + "/submit-quiz", {
-            // Adding method type
-            method: "POST",
-
-            // Adding body or contents to send
-            body: bodyOfRequest,
-
-            // Adding headers to the request
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
+    async refresh() {
+      try {
+        // /get-current-question?pin=953353133215
+        //?quizID=1&teamName=this.
+        //sending the quizID and the teamName
+        //quizID az route param, teamName is routeparam
+        let request =
+          baseUrl +
+          "/get-current-question?pin=" +
+          String(this.$store.getters.getPIN) +
+          "&boardID=" +
+          String(this.$store.getters.getBoardID);
+        console.log("Requesting:" + request);
+        const response = await fetch(request);
+        const message = await response.json();
+        if (message.finished == 0) {
+          this.questionNumber = message.questionID-1;
+        } else if (message.finished == 1) {
+          this.$router.push({
+            name: "ShowResult",
+            params: {
+              correctAnswers: message.score,
+              allQuestions: this.$store.getters.getQuestions.length,
             },
           });
-          const message = await response.json();
-          console.log("Result of quiz", message.result);
-          //Store the questions in vuex
-          this.$store.commit("loadQuestions", message.list);
-        } else {
-          //active-question?pin=953353133215&questionID=5
-          let request =
-            baseUrl +
-            "/active-question" +
-            "?pin=" +
-            String(this.$store.getters.getPIN) +
-            "&questionID=" +
-            String(this.questions[this.questionNumber + 1]["questionID"]);
-          console.log("Requesting:" + request);
-          const response = await fetch(request);
-          console.log(response);
-          //TODO answer not received...
-          this.questionNumber += 1;
+        } else if (message.finisehd == 2) {
+          console.log("The quiz was cancelled.");
         }
+      } catch (err) {
+        console.log(err);
       }
     },
   },
@@ -237,19 +202,14 @@ input[type="radio"] {
   opacity: 0;
 }
 
-input[type="radio"]:checked + span {
-  color: darkred;
-  font-weight: bold;
-}
-
-#submit-button-holder {
+#refresh-button-holder {
   display: flex;
   margin: auto;
   width: 20%;
   justify-content: center;
 }
 
-#submit-button {
+#refresh-button {
   display: block;
   margin: 30px auto;
   min-width: 200px;

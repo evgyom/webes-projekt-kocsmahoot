@@ -114,9 +114,10 @@ export default {
     this.questions = this.$props.inputQuestions;
     this.noOfQuestions = this.questions.length;
     //indicate that the game was started
+    // /set-current-question?pin=953353133215&questionID=5
     let request =
       baseUrl +
-      "/active-question" +
+      "/set-current-question" +
       "?pin=" +
       String(this.$store.getters.getPIN) +
       "&questionID=" +
@@ -185,14 +186,14 @@ export default {
             },
           });
           const message = await response.json();
-          console.log("Result of quiz", message.result);
-          //Store the questions in vuex
-          this.$store.commit("loadQuestions", message.list);
+          console.log("Result of quiz", message.score);
+          this.$store.commit("unsetGameStarted");
+          this.$router.push({ name: 'ShowResult', params: { correctAnswers: message.score, allQuestions: this.noOfQuestions}})
         } else {
-          //active-question?pin=953353133215&questionID=5
+          //set-current-question?pin=953353133215&questionID=5
           let request =
             baseUrl +
-            "/active-question" +
+            "/set-current-question" +
             "?pin=" +
             String(this.$store.getters.getPIN) +
             "&questionID=" +

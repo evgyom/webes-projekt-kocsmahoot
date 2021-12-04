@@ -38,8 +38,10 @@
 Minden request egy get
 
 * /quiz-list 
-    * összes quizhez küld
-    * ID, name, description
+    * server elküldi az össze quizhez:
+        * ID
+        * name
+        * description
 
 * /quiz-questions?quizID=xxxxx&teamName=xxxxxxxxx_xxxx
     * elküldi a szervernek a quiz-id-t és a team-name-et
@@ -50,16 +52,19 @@ Minden request egy get
 * /join-game?pin=953353133215
     * egy guest akar csatlakozni a játékhoz
     * a szerver visszaadja:
+        * csapatnév (TeamName)
+        * boardID: ami alapján a leaderboard-on lehet azonosítani a megoldást
         * adott quiz össze kérdéséhez: question-id, layout-id, kérdés, válasz1, válasz2, válasz3, válasz4
         * aktuális kérdés
     * valid-pin = 1 // valid-pin = 0
 
-* /current-question?pin=953353133215
+* /get-current-question?pin=953353133215&boardID=10
     * a guest kéri le a szervertől az aktuális kérdés id-t
     * válasz:
-        * active question-id
+        * active question-id (ha a PIN bent van az active questions táblán)
+        * finished: 0 - running (question ID) // 1 - finished (score) // 2 - cancelled 
 
-* /active-question?pin=953353133215&questionID=5
+* /set-current-question?pin=953353133215&questionID=5
     * ez egy jelzés a szervernek az admin klienstől
     * válasz:
         * OK!
@@ -70,13 +75,15 @@ Minden request egy get
         * CANCELLED!
 
 * /submit-quiz
-    * ez egy POST request lesz
+    * ez egy POST request
     * küld egy JSON-t:
         * PIN, valaszok
+    * válasz:
+        * score
 
 * /get-leaderboard
     * az összes eddigi eredményt elkéri
-    * szerver visszaadja:
+    * szerver visszaadja: nagy json
 
 ## Megoldandó szarságok
 * újratöltéskor befosódunk, mert a szerver nem tud jó választ adni a ./ize dolgokra.

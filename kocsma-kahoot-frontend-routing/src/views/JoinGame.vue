@@ -28,6 +28,12 @@ export default {
         if(message.validPin == 1){
           //Store the questions in vuex
           this.$store.commit("loadQuestions", message.list);
+          //Store the board ID of the quiz
+          this.$store.commit("updatePIN", this.PIN)
+          console.log("storing PIN in vuex", this.PIN);
+          console.log("The stored PIN:", this.$store.getters.getPIN)
+          //Store the board ID of the quiz
+          this.$store.commit("setBoardID", message.boardID)
           //Set game started
           this.$store.commit("setGameStarted");
           //Navigate to WaitingForGameStartGuest

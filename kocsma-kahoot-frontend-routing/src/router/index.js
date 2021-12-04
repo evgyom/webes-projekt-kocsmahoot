@@ -8,7 +8,8 @@ import EnterTeamName from "../views/EnterTeamName.vue";
 import WaitingForGameStartAdmin from "../views/WaitingForGameStartAdmin.vue";
 import WaitingForGameStartGuest from "../views/WaitingForGameStartGuest.vue";
 import Question from "../views/Question.vue";
-
+import QuestionGuest from "../views/QuestionGuest.vue";
+import ShowResult from "../views/ShowResult.vue";
 
 const routes = [
   {
@@ -55,6 +56,16 @@ const routes = [
     path: "/question",
     name: "Question",
     component: Question,
+  },
+  {
+    path: "/question-guest",
+    name: "QuestionGuest",
+    component: QuestionGuest,
+  },
+  {
+    path: "/show-result",
+    name: "ShowResult",
+    component: ShowResult,
   }
 ];
 
