@@ -35,6 +35,7 @@
 
 
 ## Kommunikáció
+Minden request egy get
 
 * /quiz-list 
     * összes quizhez küld
@@ -53,6 +54,16 @@
         * aktuális kérdés
     * valid-pin = 1 // valid-pin = 0
 
+* /active-question?pin=953353133215&questionID=5
+    * ez egy jelzés a szervernek az admin klienstől
+    * válasz:
+        * OK!
+
+* /cancel?pin=953353133215
+    * ez is egy jelzés a szervernek. az adott quiz session cancellve lett
+    * válasz:
+        * CANCELLED!
+
 * /submit-quiz
     * ez egy POST request lesz
     * küld egy JSON-t:
@@ -65,4 +76,6 @@
 ## Megoldandó szarságok
 * újratöltéskor befosódunk, mert a szerver nem tud jó választ adni a ./ize dolgokra.
     * minden ilyen ./ize -re vissza mehetnénk a kezdőoldalra
+    * https://stackoverflow.com/questions/36434978/how-to-redirect-to-another-page-in-node-js
 * a vissza gombra néha jobb lenne, ha máshova menne vissza (pl. nem az enter)
+* cancel request-et küldeni, amikor bezár az oldal. most csak az megy, hogy a "Are you sure you want to leave the page?" promptra elküldjük a cancel requestet

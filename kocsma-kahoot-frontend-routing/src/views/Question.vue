@@ -4,13 +4,12 @@
       <h2>{{ this.loadingText }}</h2>
     </div>
     <div v-if="loaded">
-      <question-item v-bind:questions="this.questions"> </question-item>
-    </div>  
+      <question-item v-bind:inputQuestions="this.questions"> </question-item>
+    </div>
   </div>
 </template>
 
 <script>
-
 import QuestionItem from "../components/QuestionItem.vue";
 
 export default {
@@ -19,7 +18,7 @@ export default {
   },
   data() {
     return {
-      loadingText: "Loading questions",
+      loadingText: "Loading questions.",
       loaded: false,
       post: null,
       error: null,
@@ -28,13 +27,17 @@ export default {
   },
   created() {
     //Load questions from Vuex
-    this.questions = this.$store.getters.getQuestions;
-    loaded = true;
+    try {
+      this.questions = this.$store.getters.getQuestions;
+      this.loaded = true;
+    } catch (err) {
+      this.loadingText = "Can't load questions. Drink a beer instead!";
+      console.log(err);
+    }
   },
 };
 </script>
 
 
 <style>
-
 </style>

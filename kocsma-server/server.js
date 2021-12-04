@@ -4,6 +4,7 @@ var serveStatic = require('serve-static');
 const fs = require('fs');
 var mysql = require('mysql');
 const util = require('util');
+var bodyParser = require('body-parser')
 
 var config = {
    host: "localhost",
@@ -20,8 +21,9 @@ const mydb = makeDb(config);
 });*/
 
 
-
+ 
 app = express();
+var jsonParser = bodyParser.json();
 
 app.use(serveStatic("assets/dist"));
 var port = process.env.PORT || 8080;
@@ -88,6 +90,30 @@ app.get('/quiz-questions', function (req, res) {
       });
       res.json(o);
    })();
+});
+
+// /active-question?pin=953353133215&questionID=5
+app.get('/active-question', (req, res) => {
+   console.log("active question indication received")
+   console.log("PIN", req.query.pin)
+   console.log("questionID", req.query.questionID)
+   res.send("OK")
+});
+
+// /cancel?pin=953353133215
+app.post('/cancel', (req, res) => {
+   console.log("cancel request received")
+   console.log("PIN", req.query.pin)
+   res.send("CANCELLED")
+});
+
+// /submit-quiz
+app.post('/submit-quiz', jsonParser, (req, res) => {
+   console.log("guiz submitted")
+   console.log(req.body)
+   res.json({
+      "result" : 0.8
+   });
 });
 
 app.get('/join-game', (req, res) => {
@@ -201,7 +227,7 @@ var quizek = [
 
 var kerdesek = [
    [1, 0, "Zene nélkül mit érek én?", "én", "én", "én", "Csontfájdító dzsúsz", 4],
-   [1, 1, "Igaz-e a következő állítás? A tyúk előbb volt, mint a tojás.", null, null, null, null, 0],
+   [1, 1, "Igaz-e a következő állítás? A tyúk előbb volt, mint a tojás.", null, null, null, null, 1],
    [1, 2, "Melyik évben született mindenki közös példaképe, Schmuck Andor?", null, null, null, null, 1970]
 ];
 

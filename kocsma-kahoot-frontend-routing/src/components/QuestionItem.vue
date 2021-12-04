@@ -7,7 +7,7 @@
     </div>
     <div
       class="choice-container"
-      v-if="this.questions[this.questionNumber]['type'] === 'choice'"
+      v-if="this.questions[this.questionNumber]['layoutID'] === 0"
     >
       <div class="option-container" for="option1">
         <label class="option-label">
@@ -18,9 +18,7 @@
             value="1"
             @click="update(1)"
           />
-          <span class="option-text">{{
-            questions[questionNumber]["answers"][0]
-          }}</span>
+          <span class="option-text">{{ questions[questionNumber]["A1"] }}</span>
         </label>
       </div>
       <div class="option-container">
@@ -32,9 +30,7 @@
             value="2"
             @click="update(2)"
           />
-          <span class="option-text">{{
-            questions[questionNumber]["answers"][1]
-          }}</span>
+          <span class="option-text">{{ questions[questionNumber]["A2"] }}</span>
         </label>
       </div>
       <div class="option-container">
@@ -46,9 +42,7 @@
             value="3"
             @click="update(3)"
           />
-          <span class="option-text">{{
-            questions[questionNumber]["answers"][2]
-          }}</span>
+          <span class="option-text">{{ questions[questionNumber]["A3"] }}</span>
         </label>
       </div>
       <div class="option-container">
@@ -60,15 +54,13 @@
             value="4"
             @click="update(4)"
           />
-          <span class="option-text">{{
-            questions[questionNumber]["answers"][3]
-          }}</span>
+          <span class="option-text">{{ questions[questionNumber]["A4"] }}</span>
         </label>
       </div>
     </div>
     <div
       class="tf-container"
-      v-if="this.questions[this.questionNumber]['type'] === 'tf'"
+      v-if="this.questions[this.questionNumber]['layoutID'] === 1"
     >
       <div class="option-container" for="optionT">
         <label class="option-label">
@@ -77,7 +69,7 @@
             id="optionT"
             name="option"
             value="true"
-            @click="update(true)"
+            @click="update(1)"
           />
           <span class="option-text">True</span>
         </label>
@@ -89,7 +81,7 @@
             id="optionF"
             name="option"
             value="false"
-            @click="update(false)"
+            @click="update(2)"
           />
           <span class="option-text">False</span>
         </label>
@@ -98,7 +90,7 @@
 
     <div
       class="numeric-container"
-      v-if="this.questions[this.questionNumber]['type'] === 'numeric'"
+      v-if="this.questions[this.questionNumber]['layoutID'] === 2"
     >
       <div class="option-container">
         <input type="number" id="numeric-ans" v-model.lazy.trim="numericAns" />
@@ -112,35 +104,102 @@
 </template>
 
 <script>
+let baseUrl = "";
+
 export default {
   props: {
-    questions: { required: true},
+    inputQuestions: { required: true },
+  },
+  created() {
+    this.questions = this.$props.inputQuestions;
+    this.noOfQuestions = this.questions.length;
   },
   data() {
     return {
-      answer: 0,
+      questions: null,
+      noOfQuestions: 0,
+      answer: -1,
+      collectedAnswers: [],
       numericAns: 0,
       questionNumber: 0,
     };
   },
+  computed: {},
   methods: {
     update(selected) {
       this.answer = selected;
     },
-    submit() {
-      if (this.questions[this.questionNumber]["type"] === "numeric") {
-        console.log(this.numericAns);
+    async submit() {
+      //check if a new answer was selected
+      if (
+        this.answer === -1 &&
+        this.questions[this.questionNumber]["layoutID"] != 2
+      ) {
+        window.alert("You have to enter an answer.");
       } else {
-        console.log(this.answer);
+        if (this.questions[this.questionNumber]["layoutID"] == 2) {
+          console.log(this.numericAns);
+          this.collectedAnswers.push({
+            questionID: this.questions[this.questionNumber]["questionID"],
+            answer: this.numericAns,
+          });
+        } else {
+          console.log(this.answer);
+          this.collectedAnswers.push({
+            questionID: this.questions[this.questionNumber]["questionID"],
+            answer: this.answer,
+          });
+        }
+        //Clear answer
+        this.answer = -1;
+        //Display all the stored answers
+        console.log("All answers", this.collectedAnswers);
+        if (this.questionNumber == this.noOfQuestions - 1) {
+          console.log("Finished quiz");
+          let bodyOfRequest = JSON.stringify({
+            "pin": this.$store.getters.getPIN,
+            "answers": this.collectedAnswers,
+          });
+          console.log("Body of request", bodyOfRequest);
+          const response = await fetch(baseUrl + "/submit-quiz", {
+            // Adding method type
+            method: "POST",
+
+            // Adding body or contents to send
+            body: bodyOfRequest,
+
+            // Adding headers to the request
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          });
+          const message = await response.json();
+          console.log("Result of quiz", message.result);
+          //Store the questions in vuex
+          this.$store.commit("loadQuestions", message.list);
+        } else {
+          //active-question?pin=953353133215&questionID=5
+          let request =
+            baseUrl +
+            "/active-question" +
+            "?pin=" +
+            String(this.$store.getters.getPIN) +
+            "&questionID=" +
+            String(this.questions[this.questionNumber + 1]["questionID"]);
+          console.log("Requesting:" + request);
+          const response = await fetch(request);
+          console.log(response);
+          //TODO answer not received...
+          this.questionNumber += 1;
+        }
       }
-      this.questionNumber += 1;
     },
   },
 };
 </script>
 
 <style scoped>
-    .choice-container {
+.choice-container {
   display: grid;
   grid-template-columns: 40% 40%;
   grid-gap: 50px 50px;
@@ -161,8 +220,6 @@ export default {
   margin-left: 100px;
   margin-right: 100px;
 }
-
-
 
 .option-label {
   border-style: solid;

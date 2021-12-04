@@ -4,7 +4,7 @@
     <h2>Enter the name of your team!</h2>
     <div id="teamname-enter-form">
       <div>
-        <input type="text" v-model="this.TeamName" />
+        <input type="text" v-model="this.teamName" />
         <button @click="SetGameStarted">
           <router-link
             style="text-decoration: none"
@@ -28,13 +28,11 @@ export default {
   methods: {
     SetGameStarted() {
       this.$store.commit("setGameStarted");
-      console.log("entered team name:", this.TeamName);
-      console.log("Navigating to --waitingforgamestartadmin--");
     },
   },
   data() {
     return {
-      TeamName: null,
+      teamName: null,
     };
   },
 };

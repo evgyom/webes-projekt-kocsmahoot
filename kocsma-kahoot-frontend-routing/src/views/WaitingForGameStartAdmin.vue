@@ -30,11 +30,19 @@
 import { HalfCircleSpinner } from "epic-spinners";
 let baseUrl = "";
 
+window.onbeforeunload = function () {
+    return false;
+};
+
+window.addEventListener("unload", function() {
+  navigator.sendBeacon("/cancel?pin=" + String(this.$store.getters.getPIN));
+});
+
 export default {
   components: {
     HalfCircleSpinner,
   },
-  beforeRouteLeave(to, from, next) {
+  async beforeRouteLeave(to, from, next) {
     console.log(to.path);
     if (to.path == "/question") {
       next();
@@ -43,6 +51,17 @@ export default {
       if (answer) {
         next();
         this.$store.commit("unsetGameStarted");
+        //Send game cancelled request to server
+        try {
+          // /cancel?pin=953353133215
+          let request =
+            baseUrl + "/cancel" + "?pin=" + String(this.$store.getters.getPIN);
+          console.log("Requesting:" + request);
+          const response = await fetch(request);
+          console.log(response);
+        } catch (err) {
+          console.log(err);
+        }
       } else {
         next(false);
       }
@@ -51,7 +70,7 @@ export default {
   data() {
     return {
       PIN: null,
-      loadingText: "Loading available quizzes...",
+      loadingText: "Loading questions...",
       loaded: false,
       post: null,
       error: null,
@@ -59,7 +78,9 @@ export default {
   },
   created() {
     //Check the quizID
-    console.log("QuizID, "+String(this.$store.getters.getQuizID))
+    console.log("QuizID, " + String(this.$store.getters.getQuizID));
+    //Check the team name
+    console.log("Teamname: " + String(this.$route.params.teamName));
     this.fetchQuestionsAndPIN();
   },
   methods: {
@@ -77,17 +98,18 @@ export default {
           "?quizID=" +
           String(this.$store.getters.getQuizID) +
           "&teamName=" +
-          this.$route.params.teamName;
+          String(this.$route.params.teamName);
         console.log("Requesting:" + request);
         const response = await fetch(request);
         const message = await response.json();
         //Store the questions in vuex
         this.$store.commit("loadQuestions", message.list);
         //Store the PIN
+        this.$store.commit("updatePIN", message.pin);
         this.PIN = message.pin;
-        console.log(this.Pin)
         this.loaded = true;
-        console.log("loaded questions");
+        console.log("Loaded questions");
+        console.log("Questions:", this.$store.getters.getQuestions);
       } catch (err) {
         this.loadingText = "Can't load questions. Drink a beer instead!";
         console.log(err);
