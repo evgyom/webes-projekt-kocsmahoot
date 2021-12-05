@@ -86,8 +86,11 @@ Minden request egy get
     * szerver visszaadja: nagy json
 
 ## Megoldandó szarságok
-* újratöltéskor befosódunk, mert a szerver nem tud jó választ adni a ./ize dolgokra.
-    * minden ilyen ./ize -re vissza mehetnénk a kezdőoldalra
-    * https://stackoverflow.com/questions/36434978/how-to-redirect-to-another-page-in-node-js
 * a vissza gombra néha jobb lenne, ha máshova menne vissza (pl. nem az enter)
 * cancel request-et küldeni, amikor bezár az oldal. most csak az megy, hogy a "Are you sure you want to leave the page?" promptra elküldjük a cancel requestet
+
+## Galó feladat:
+- style-ok harmonozálása
+- button elhelyezések fixálása (Guest screenen)
+- button színek. minden cancel / refresh button azonos színű
+- átméretezéskor ne legyen annyira ronda

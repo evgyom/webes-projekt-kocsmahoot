@@ -24,6 +24,12 @@ export default {
     title: { required: true, type: String },
     description: { required: true, type: String },
   },
+  data() {
+    return {
+      ShowDescription: false,
+      ShowDescriptionText: "Show description",
+    };
+  },
   methods: {
     ToggleShowDescription() {
       this.ShowDescription = !this.ShowDescription;
@@ -38,12 +44,6 @@ export default {
       console.log("Saving quizID to vuex:", this.$props.quizID);
       this.$store.commit("setQuizID", this.$props.quizID);
     },
-  },
-  data() {
-    return {
-      ShowDescription: false,
-      ShowDescriptionText: "Show description",
-    };
   },
 };
 </script>

@@ -23,7 +23,7 @@ const routes = [
     component: CreateGame,
   },
   {
-    path: "/enter-team-name/:name",
+    path: "/enter-team-name",
     name: "EnterTeamName",
     component: EnterTeamName,
   },

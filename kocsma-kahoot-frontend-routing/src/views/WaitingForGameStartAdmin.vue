@@ -5,7 +5,8 @@
     </div>
     <div v-if="loaded">
       <h2>Waiting for guests to join.</h2>
-      <h2>PIN: {{ PIN }}</h2>
+      <h3>PIN: {{ PIN }}</h3>
+      <h3>Team name: {{ this.$store.getters.getTeamName }}</h3>
       <div id="spinner-holder">
         <half-circle-spinner
           id="spinner"
@@ -30,42 +31,23 @@
 import { HalfCircleSpinner } from "epic-spinners";
 let baseUrl = "";
 
+/*
 window.onbeforeunload = function () {
-    return false;
+  return false;
 };
 
-window.addEventListener("unload", function() {
+window.addEventListener("unload", function () {
   navigator.sendBeacon("/cancel?pin=" + String(this.$store.getters.getPIN));
 });
+
+target.removeEventListener(type, listener);
+
+
+*/
 
 export default {
   components: {
     HalfCircleSpinner,
-  },
-  async beforeRouteLeave(to, from, next) {
-    console.log(to.path);
-    if (to.path == "/question") {
-      next();
-    } else {
-      const answer = window.confirm("Do you really want to leave?");
-      if (answer) {
-        next();
-        this.$store.commit("unsetGameStarted");
-        //Send game cancelled request to server
-        try {
-          // /cancel?pin=953353133215
-          let request =
-            baseUrl + "/cancel" + "?pin=" + String(this.$store.getters.getPIN);
-          console.log("Requesting:" + request);
-          const response = await fetch(request);
-          console.log(response);
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        next(false);
-      }
-    }
   },
   data() {
     return {
@@ -82,10 +64,37 @@ export default {
     //Check the team name
     console.log("Teamname: " + String(this.$route.params.teamName));
     this.fetchQuestionsAndPIN();
+    //Register event listener
+    window.addEventListener("beforeunload", this.onClose);
+  },
+  async beforeRouteLeave(to, from, next) {
+    console.log(to.path);
+    if (to.path == "/question") {
+      next();
+    } else {
+      const answer = window.confirm("Do you really want to leave?");
+      if (answer) {
+        next();
+        this.$store.commit("unsetGameStarted");
+        //Send game cancelled request to server
+        try {
+          // /cancel?pin=953353133215
+          let request =
+            baseUrl + "/cancel?pin=" + String(this.$store.getters.getPIN);
+          console.log("Requesting:" + request);
+          const response = await fetch(request);
+          console.log(response);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        next(false);
+      }
+    }
   },
   methods: {
     navigateBack() {
-      history.back();
+      this.$router.push({ name: "CreateGame" });
     },
     async fetchQuestionsAndPIN() {
       try {
@@ -114,6 +123,13 @@ export default {
         this.loadingText = "Can't load questions. Drink a beer instead!";
         console.log(err);
       }
+    },
+    onClose(e) {
+      //fetch(baseUrl + "/cancel?pin=" + String(this.PIN), {method: "POST"});
+      navigator.sendBeacon(baseUrl + "/cancel?pin=" + String(this.PIN))
+
+      // the absence of a returnValue property on the event will guarantee the browser unload happens
+      delete e["returnValue"];
     },
   },
 };

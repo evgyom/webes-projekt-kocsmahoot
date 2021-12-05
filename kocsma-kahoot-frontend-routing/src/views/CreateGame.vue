@@ -23,10 +23,10 @@ import QuizListItem from "../components/QuizListItem.vue";
 let baseUrl = "";
 
 export default {
-  props: {},
   components: {
     QuizListItem,
   },
+  props: {},
   data() {
     return {
       loadingText: "Loading available quizzes...",
@@ -43,18 +43,17 @@ export default {
   },
   methods: {
     async fetchData() {
-      try{
-        const response = await fetch(baseUrl+"/quiz-list");
+      try {
+        const response = await fetch(baseUrl + "/quiz-list");
         const message = await response.json();
         this.listOfQuizzes = message.list;
         console.log("LIST OF QUIZZES");
         console.log(this.listOfQuizzes);
         this.loaded = true;
+      } catch (err) {
+        this.loadingText = "Can't load quiz list. Drink a beer instead!";
+        console.log(err);
       }
-      catch(err){
-        this.loadingText = "Can't load quiz list. Drink a beer instead!"
-        console.log(err)
-      } 
     },
   },
 };

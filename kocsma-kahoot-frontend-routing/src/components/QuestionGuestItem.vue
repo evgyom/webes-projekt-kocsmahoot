@@ -97,6 +97,8 @@
       </div>
     </div>
 
+    <p>{{this.statusText}}</p>
+
     <div id="refresh-button-holder">
       <button id="refresh-button" @click="refresh()">Refresh</button>
     </div>
@@ -119,20 +121,17 @@ export default {
     return {
       questions: null,
       noOfQuestions: 0,
-      questionNumber: 0
+      questionNumber: 0,
+      statusText: "This answer is only visible on this device."
     };
   },
-  computed: {},
   methods: {
     update(selected) {
       this.answer = selected;
     },
     async refresh() {
       try {
-        // /get-current-question?pin=953353133215
-        //?quizID=1&teamName=this.
-        //sending the quizID and the teamName
-        //quizID az route param, teamName is routeparam
+        // /get-current-question?pin=953353133215&boardID=10
         let request =
           baseUrl +
           "/get-current-question?pin=" +
@@ -145,6 +144,7 @@ export default {
         if (message.finished == 0) {
           this.questionNumber = message.questionID-1;
         } else if (message.finished == 1) {
+          this.$store.commit("unsetGameStarted");
           this.$router.push({
             name: "ShowResult",
             params: {
@@ -152,8 +152,10 @@ export default {
               allQuestions: this.$store.getters.getQuestions.length,
             },
           });
-        } else if (message.finisehd == 2) {
+        } else if (message.finished == 2) {
           console.log("The quiz was cancelled.");
+          this.statusText = "Quiz was cancelled.";
+          this.$store.commit("unsetGameStarted");
         }
       } catch (err) {
         console.log(err);
@@ -200,6 +202,11 @@ export default {
 
 input[type="radio"] {
   opacity: 0;
+}
+
+input[type="radio"]:checked + span {
+  color: darkred;
+  font-weight: bold;
 }
 
 #refresh-button-holder {

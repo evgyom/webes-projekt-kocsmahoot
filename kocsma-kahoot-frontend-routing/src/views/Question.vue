@@ -11,6 +11,7 @@
 
 <script>
 import QuestionItem from "../components/QuestionItem.vue";
+let baseUrl = "";
 
 export default {
   components: {
@@ -33,6 +34,32 @@ export default {
     } catch (err) {
       this.loadingText = "Can't load questions. Drink a beer instead!";
       console.log(err);
+    }
+  },
+  async beforeRouteLeave(to, from, next) {
+    console.log(to.path);
+    if (to.path == "/question") {
+      next();
+    } else {
+      const answer = window.confirm("Do you really want to leave?");
+      if (answer) {
+        //Send game cancelled request to server
+        try {
+          // /cancel?pin=953353133215
+          let request =
+            baseUrl + "/cancel" + "?pin=" + String(this.$store.getters.getPIN);
+          console.log("Requesting:" + request);
+          const response = await fetch(request);
+          console.log(response);
+        } catch (err) {
+          console.log(err);
+        } finally {
+          next();
+          this.$store.commit("unsetGameStarted");
+        }
+      } else {
+        next(false);
+      }
     }
   },
 };

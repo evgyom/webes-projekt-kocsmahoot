@@ -12,17 +12,13 @@
         >HOW TO PLAY</router-link
       >
       |
-      <router-link style="text-decoration: none" to="/upload-game"
-        >UPLOAD GAME</router-link
-      >
-      |
       <router-link style="text-decoration: none" to="/leaderboard"
         >LEADERBOARD</router-link
       >
     </div>
     <div v-else id="nav"></div>
     <router-view />
-    <div id="footer">© copyright 2010 Sütő Zoltán</div>
+    <div id="footer">© copyright 2021 Kocsmahoot </div>
   </div>
 </template>
 
@@ -43,7 +39,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: black;
 }
 
 h1 {
@@ -56,12 +52,12 @@ h1 {
   padding: 30px;
   font-size: 30px;
   display: block;
-  background-color: lightgrey;
+  background-color: darkred;
 }
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: black;
 }
 
 #nav a.router-link-exact-active {
@@ -118,8 +114,12 @@ button {
 /* FOOTER */
 
 #footer {
+  position: fixed; 
+  bottom: 0;
+  left: 0;
+  right: 0;
   font-size: 20px;
-  background-color: lightgrey;
+  background-color: darkred;
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 30px;

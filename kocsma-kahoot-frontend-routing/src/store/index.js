@@ -7,6 +7,7 @@ export default createStore({
     Questions: null,
     PIN: null,
     BoardID: null,
+    TeamName: null,
   },
   mutations: {
     setGameStarted(state){
@@ -28,6 +29,9 @@ export default createStore({
     setBoardID(state, boardID){
       state.BoardID = boardID;
     },
+    setTeamName(state, teamName){
+      state.TeamName = teamName;
+    }
   },
   actions: {},
   modules: {},
@@ -36,6 +40,7 @@ export default createStore({
     getQuizID: state => state.QuizID,
     getQuestions: state => state.Questions,
     getPIN: state => state.PIN,
-    getBoardID: state => state.BoardID
+    getBoardID: state => state.BoardID,
+    getTeamName: state => state.TeamName
   }
 });

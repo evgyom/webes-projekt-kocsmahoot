@@ -1,6 +1,7 @@
 <template>
   <div id="enter-pin-component">
-    <h2>Enter your PIN below:</h2>
+    <h2>Join Game</h2>
+    <h3>Enter your PIN below:</h3>
     <div id="pin-enter-form">
       <div>
         <input type="text" v-model="this.PIN" />
@@ -12,11 +13,15 @@
 </template>
 
 <script>
-
 let baseUrl = "";
 
 export default {
   props: {},
+  data() {
+    return {
+      PIN: null,
+    };
+  },
   methods: {
     async goButtonPushed() {
       try {
@@ -25,38 +30,32 @@ export default {
         console.log("Requesting:" + request);
         const response = await fetch(request);
         const message = await response.json();
-        if(message.validPin == 1){
+        if (message.validPin == 1) {
           //Store the questions in vuex
           this.$store.commit("loadQuestions", message.list);
-          //Store the board ID of the quiz
-          this.$store.commit("updatePIN", this.PIN)
-          console.log("storing PIN in vuex", this.PIN);
-          console.log("The stored PIN:", this.$store.getters.getPIN)
-          //Store the board ID of the quiz
-          this.$store.commit("setBoardID", message.boardID)
+          //Store the PIN in vuex
+          this.$store.commit("updatePIN", this.PIN);
+          //Store the boardID in vuex
+          this.$store.commit("setBoardID", message.boardID);
+          //Store the teamName in vuex
+          this.$store.commit("setTeamName", message.teamName)
           //Set game started
           this.$store.commit("setGameStarted");
           //Navigate to WaitingForGameStartGuest
-          this.$router.push({ name: 'WaitingForGameStartGuest'})
-        }else{
-          this.PIN = "Invalid PIN"
+          this.$router.push({ name: "WaitingForGameStartGuest" });
+        } else {
+          this.PIN = "Invalid PIN";
         }
       } catch (err) {
         console.log(err);
       }
     },
   },
-  data() {
-    return {
-      PIN: null,
-    };
-  },
 };
 </script>
 
 <style scoped>
 #enter-pin-component {
-  margin-top: 30px;
   margin-bottom: 30px;
   padding-top: 50px;
   padding-bottom: 50px;

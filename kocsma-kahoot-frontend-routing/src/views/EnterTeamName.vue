@@ -25,15 +25,16 @@
 <script>
 export default {
   props: {},
-  methods: {
-    SetGameStarted() {
-      this.$store.commit("setGameStarted");
-    },
-  },
   data() {
     return {
       teamName: null,
     };
+  },
+  methods: {
+    SetGameStarted() {
+      this.$store.commit("setGameStarted");
+      this.$store.commit("setTeamName", this.teamName);
+    },
   },
 };
 </script>

@@ -98,6 +98,7 @@
     </div>
 
     <div id="submit-button-holder">
+      <button id="submit-button" @click="cancel()">Cancel</button>
       <button id="submit-button" @click="submit()">Submit</button>
     </div>
   </div>
@@ -109,6 +110,16 @@ let baseUrl = "";
 export default {
   props: {
     inputQuestions: { required: true },
+  },
+  data() {
+    return {
+      questions: null,
+      noOfQuestions: 0,
+      answer: -1,
+      collectedAnswers: [],
+      numericAns: 0,
+      questionNumber: 0,
+    };
   },
   async created() {
     this.questions = this.$props.inputQuestions;
@@ -126,17 +137,6 @@ export default {
     const response = await fetch(request);
     console.log(response);
   },
-  data() {
-    return {
-      questions: null,
-      noOfQuestions: 0,
-      answer: -1,
-      collectedAnswers: [],
-      numericAns: 0,
-      questionNumber: 0,
-    };
-  },
-  computed: {},
   methods: {
     update(selected) {
       this.answer = selected;
@@ -188,7 +188,13 @@ export default {
           const message = await response.json();
           console.log("Result of quiz", message.score);
           this.$store.commit("unsetGameStarted");
-          this.$router.push({ name: 'ShowResult', params: { correctAnswers: message.score, allQuestions: this.noOfQuestions}})
+          this.$router.push({
+            name: "ShowResult",
+            params: {
+              correctAnswers: message.score,
+              allQuestions: this.noOfQuestions,
+            },
+          });
         } else {
           //set-current-question?pin=953353133215&questionID=5
           let request =
@@ -205,6 +211,9 @@ export default {
           this.questionNumber += 1;
         }
       }
+    },
+    async cancel() {
+      this.$router.push({ name: "CreateGame" });
     },
   },
 };

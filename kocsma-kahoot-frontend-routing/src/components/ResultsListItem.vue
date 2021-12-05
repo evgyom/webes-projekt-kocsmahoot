@@ -9,8 +9,8 @@
     <div v-if="ShowDescription">
       <ul class="list-of-quizzes">
         <li v-for="item in teams" :key="item.TeamName">
-          <p> {{ item.TeamName }} </p>
-          <p> {{ item.score}} / {{count}} </p>
+          <p>{{ item.TeamName }}</p>
+          <p>{{ item.score }} / {{ count }}</p>
         </li>
       </ul>
     </div>
@@ -24,6 +24,12 @@ export default {
     count: { required: true, type: Number },
     teams: { required: true },
   },
+  data() {
+    return {
+      ShowDescription: false,
+      ShowDescriptionText: "Show results",
+    };
+  },
   created() {
     console.log("added new quiz element");
     console.log(this.$props.quizName);
@@ -32,17 +38,11 @@ export default {
     ToggleShowDescription() {
       this.ShowDescription = !this.ShowDescription;
       if (this.ShowDescription) {
-        this.ShowDescriptionText = "Hide description";
+        this.ShowDescriptionText = "Hide results";
       } else {
-        this.ShowDescriptionText = "Show description";
+        this.ShowDescriptionText = "Show results";
       }
     },
-  },
-  data() {
-    return {
-      ShowDescription: false,
-      ShowDescriptionText: "Show teams",
-    };
   },
 };
 </script>
