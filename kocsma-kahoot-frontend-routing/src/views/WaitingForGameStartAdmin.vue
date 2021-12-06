@@ -41,8 +41,6 @@ window.addEventListener("unload", function () {
 });
 
 target.removeEventListener(type, listener);
-
-
 */
 
 export default {
@@ -64,8 +62,13 @@ export default {
     //Check the team name
     console.log("Teamname: " + String(this.$route.params.teamName));
     this.fetchQuestionsAndPIN();
+  },
+  mounted() {
     //Register event listener
     window.addEventListener("beforeunload", this.onClose);
+  },
+  beforeUnmount() {
+    window.removeEventListener("beforeunload", this.onClose);
   },
   async beforeRouteLeave(to, from, next) {
     console.log(to.path);
@@ -126,7 +129,7 @@ export default {
     },
     onClose(e) {
       //fetch(baseUrl + "/cancel?pin=" + String(this.PIN), {method: "POST"});
-      navigator.sendBeacon(baseUrl + "/cancel?pin=" + String(this.PIN))
+      navigator.sendBeacon(baseUrl + "/cancel?pin=" + String(this.PIN));
 
       // the absence of a returnValue property on the event will guarantee the browser unload happens
       delete e["returnValue"];
