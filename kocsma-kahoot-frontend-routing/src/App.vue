@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Kocsmahoot</h1>
+    <h1>Kocsmahút</h1>
     <div v-if="!this.$store.getters.getGameStartedState" id="nav">
       <router-link style="text-decoration: none" to="/">JOIN GAME</router-link>
       |
@@ -18,7 +18,7 @@
     </div>
     <div v-else id="nav"></div>
     <router-view />
-    <div id="footer">© copyright 2021 Kocsmahoot </div>
+    <div id="footer">© copyright 2021 Kocsmahút </div>
   </div>
 </template>
 
@@ -34,16 +34,27 @@ export default {
 
 
 <style>
+html {
+  color: #D6D6D6;
+  background-color: #00003D;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: black;
 }
 
 h1 {
   font-size: 80px;
+  color: #3BBA94;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+a {
+  color: #F5F5F5;
 }
 
 /*NAVBAR*/
@@ -52,16 +63,17 @@ h1 {
   padding: 30px;
   font-size: 30px;
   display: block;
-  background-color: darkred;
+  background-color: #D6D6D6;
+  color: #00003D;
 }
 
 #nav a {
   font-weight: bold;
-  color: black;
+  color: #00003D;
 }
 
 #nav a.router-link-exact-active {
-  color: white;
+  color: #3BBA94;
 }
 
 nav li:hover {
@@ -80,23 +92,23 @@ p {
 }
 
 button {
-  background-color: black;
+  background-color: #3BBA94;
   border-radius: 4px;
   border-style: none;
   box-sizing: border-box;
-  color: #fff;
+  color: #F5F5F5;
   cursor: pointer;
-  display: inline-block;
-  font-size: 16px;
-  font-weight: 700;
+  display: block;
+  font-size: 50px;
+  font-weight: bold;
   line-height: 1.5;
   margin: 0;
+  padding: 0;
   max-width: none;
   min-height: 44px;
-  min-width: 10px;
+  min-width: 100px;
   outline: none;
-  overflow: hidden;
-  padding: 9px 20px 8px;
+  overflow:hidden;
   position: relative;
   text-align: center;
   text-transform: none;
@@ -104,6 +116,38 @@ button {
   -webkit-user-select: none;
   touch-action: manipulation;
   width: 100%;
+}
+
+.cancel-button {
+  background-color: #CFAC3A;
+}
+
+.start-game-button {
+  flex: 1;
+  min-width: 150px;
+}
+
+input[type="text"] {
+  flex: 5;
+  height: 100px;
+  width: 500px;
+  font-size: 80px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+input[type="number"] {
+  height: 100px;
+  width: 300px;
+  font-size: 80px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .button-31:hover,
@@ -119,10 +163,11 @@ button {
   left: 0;
   right: 0;
   font-size: 20px;
-  background-color: darkred;
+  background-color: #3BBA94;
   margin-top: 0;
   margin-bottom: 0;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: #F5F5F5;
 }
 </style>

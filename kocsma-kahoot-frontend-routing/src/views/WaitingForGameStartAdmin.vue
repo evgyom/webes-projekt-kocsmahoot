@@ -12,16 +12,16 @@
           id="spinner"
           :animation-duration="1000"
           :size="120"
-          :color="'#000000'"
+          :color="'#D6D6D6'"
         />
       </div>
       <div id="buttons-holder">
         <button id="start-button">
-          <router-link style="text-decoration: none" to="/question"
-            >Start</router-link
-          >
+          <router-link style="text-decoration: none" to="/question">
+            Start
+          </router-link>
         </button>
-        <button @click="navigateBack" id="cancel-button">Cancel</button>
+        <button @click="navigateBack" class="cancel-button" id="cancel-button">Cancel</button>
       </div>
     </div>
   </div>
@@ -41,6 +41,8 @@ window.addEventListener("unload", function () {
 });
 
 target.removeEventListener(type, listener);
+
+
 */
 
 export default {
@@ -129,7 +131,7 @@ export default {
     },
     onClose(e) {
       //fetch(baseUrl + "/cancel?pin=" + String(this.PIN), {method: "POST"});
-      navigator.sendBeacon(baseUrl + "/cancel?pin=" + String(this.PIN));
+      navigator.sendBeacon(baseUrl + "/cancel?pin=" + String(this.PIN))
 
       // the absence of a returnValue property on the event will guarantee the browser unload happens
       delete e["returnValue"];
@@ -140,16 +142,14 @@ export default {
 
 <style scoped>
 #holder {
-  margin-top: 30px;
   margin-bottom: 30px;
-  padding-top: 30px;
   padding-bottom: 30px;
 }
 
 #spinner-holder {
   display: block;
   width: 50%;
-  height: 200px;
+  height: 165px;
   margin: auto;
 }
 
@@ -162,24 +162,16 @@ export default {
 #buttons-holder {
   display: flex;
   margin: auto;
+  margin-bottom: 50px;
   width: 20%;
+  justify-content: center;
 }
 
 button {
-  display: block;
   margin: auto;
-  min-width: 100px;
   font-size: 30px;
   margin-left: 10px;
   margin-right: 10px;
-}
-
-#start-button {
-  background-color: darkred;
-  justify-self: right;
-}
-
-a {
-  color: white;
+  min-width: 120px;
 }
 </style>

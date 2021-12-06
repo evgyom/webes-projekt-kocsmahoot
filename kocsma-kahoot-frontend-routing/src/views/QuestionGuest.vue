@@ -29,6 +29,7 @@ export default {
     //Load questions from Vuex
     try {
       this.questions = this.$store.getters.getQuestions;
+      console.log("Question guest view lodaded the questions.", this.questions)
       this.loaded = true;
     } catch (err) {
       this.loadingText = "Can't load questions. Drink a beer instead!";
@@ -39,5 +40,5 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 </style>

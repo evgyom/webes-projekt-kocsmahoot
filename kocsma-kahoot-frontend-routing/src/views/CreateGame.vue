@@ -4,7 +4,7 @@
       <h2>{{ this.loadingText }}</h2>
     </div>
     <div v-if="loaded">
-      <h2>Choose your Kocsmahoot!</h2>
+      <h2>Choose your Kocsmahút!</h2>
       <ul class="list-of-quizzes">
         <li v-for="item in listOfQuizzes" :key="item.title">
           <quiz-list-item
@@ -62,6 +62,7 @@ export default {
 <style scoped>
 ul {
   list-style-type: none;
+  margin-bottom: 100px;
 }
 
 li {

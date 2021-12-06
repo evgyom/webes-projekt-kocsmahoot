@@ -98,7 +98,7 @@
     </div>
 
     <div id="submit-button-holder">
-      <button id="submit-button" @click="cancel()">Cancel</button>
+      <button id="submit-button" class="cancel-button" @click="cancel()">Cancel</button>
       <button id="submit-button" @click="submit()">Submit</button>
     </div>
   </div>
@@ -238,16 +238,17 @@ export default {
   display: flex;
   justify-self: center;
   justify-content: center;
-  margin-left: 100px;
-  margin-right: 100px;
+  margin-left: 50px;
+  margin-right: 50px;
 }
 
 .option-label {
   border-style: solid;
-  border-color: lightgrey;
+  border-color: #D6D6D6;
   border-width: 20px;
   border-radius: 5px;
-  background: lightgrey;
+  background: #D6D6D6;
+  color: #00003D;
 }
 
 .option-text {
@@ -259,7 +260,7 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked + span {
-  color: darkred;
+  color: #3BBA94;
   font-weight: bold;
 }
 
@@ -271,13 +272,11 @@ input[type="radio"]:checked + span {
 }
 
 #submit-button {
-  display: block;
   margin: 30px auto;
   min-width: 200px;
   font-size: 30px;
   margin-left: 10px;
   margin-right: 10px;
-  background-color: darkred;
   justify-self: center;
 }
 </style>

@@ -1,26 +1,84 @@
 {
-  "PIN": 552255669,
   "list": [
     {
-      "question": "Zene nélkül mit érek én?",
-      "type": "choice",
-      "answers": ["én", "én", "én", "Csontfájdító dzsúsz"],
+      "quizID": 1,
+      "layoutID": 0,
+      "question": "Mikor kapta a nevét a MOGI tanszéket?",
+      "A1": "1957",
+      "A2": "2000",
+      "A3": "1985",
+      "A4": "2007",
+      "correct": 4
+    },
+    {
+      "quizID": 1,
+      "layoutID": 1,
+      "question": "A gyógysör segít?",
+      "A1": null,
+      "A2": null,
+      "A3": null,
+      "A4": null,
       "correct": 1
     },
     {
-      "question": "Igaz-e a következő állítás? A tyúk előbb volt, mint a tojás.",
-      "type": "tf",
-      "correct": false
+      "quizID": 1,
+      "layoutID": 2,
+      "question": "Hány lába van egy tapírnak?",
+      "A1": null,
+      "A2": null,
+      "A3": null,
+      "A4": null,
+      "correct": 4
     },
     {
+      "quizID": 2,
+      "layoutID": 0,
+      "question": "Zene nélkül mit érek én?",
+      "A1": "én",
+      "A2": "én",
+      "A3": "én",
+      "A4": "Csontfájdító dzsúsz",
+      "correct": 4
+    },
+    {
+      "quizID": 2,
+      "layoutID": 1,
+      "question": "Igaz-e a következő állítás? A tyúk előbb volt, mint a tojás.",
+      "A1": null,
+      "A2": null,
+      "A3": null,
+      "A4": null,
+      "correct": 1
+    },
+    {
+      "quizID": 2,
+      "layoutID": 2,
       "question": "Melyik évben született mindenki közös példaképe, Schmuck Andor?",
-      "type": "numeric",
+      "A1": null,
+      "A2": null,
+      "A3": null,
+      "A4": null,
       "correct": 1970
     },
     {
-      "question": "",
-      "type": "text",
-      "correct": 1974
+      "quizID": 3,
+      "layoutID": 0,
+      "question": "Melyik a legfiatalabb MÁV dízelmozdony?",
+      "A1": "Taurus",
+      "A2": "Szili",
+      "A3": "Traxx",
+      "A4": "Gigant",
+      "correct": 3
+    },
+    {
+      "quizID": 3,
+      "layoutID": 2,
+      "question": "Összesen hány évnyit késtek a MÁV járatok 2018-ban?",
+      "A1": null,
+      "A2": null,
+      "A3": null,
+      "A4": null,
+      "correct": 4
     }
   ]
 }

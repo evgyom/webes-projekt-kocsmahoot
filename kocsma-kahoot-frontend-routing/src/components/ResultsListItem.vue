@@ -7,12 +7,12 @@
       </button>
     </div>
     <div v-if="ShowDescription">
-      <ul class="list-of-quizzes">
+      <ol class="list-of-quizzes">
         <li v-for="item in teams" :key="item.TeamName">
-          <p>{{ item.TeamName }}</p>
+          <p id="team-name">{{ item.TeamName }}</p>
           <p>{{ item.score }} / {{ count }}</p>
         </li>
-      </ul>
+      </ol>
     </div>
   </div>
 </template>
@@ -49,8 +49,9 @@ export default {
 
 <style scoped>
 .quiz-list-item {
-  background-color: lightgrey;
-  border-color: white;
+  background-color: #D6D6D6;
+  border-color: #D6D6D6;
+  color: #00003D;
   border-width: 2px;
   display: block;
   width: 70%;
@@ -67,20 +68,12 @@ export default {
 }
 
 button {
-  height: 50px;
-  min-width: 250px;
+  min-height: 50px;
+  min-width: 150px;
   font-size: 20px;
   flex: 2;
   margin-right: 10px;
   margin-left: 10px;
-}
-
-#start-button {
-  background-color: darkred;
-}
-
-#start-button a {
-  color: white;
 }
 
 #title {
@@ -95,5 +88,9 @@ button {
 
 p {
   text-align: left;
+}
+
+#teamname {
+  font-weight: normal
 }
 </style>

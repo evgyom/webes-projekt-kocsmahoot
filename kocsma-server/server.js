@@ -5,7 +5,6 @@ const fs = require("fs");
 var mysql = require("mysql");
 const util = require("util");
 var bodyParser = require("body-parser");
-var cron = require("node-cron");
 
 app = express();
 var jsonParser = bodyParser.json();
@@ -28,7 +27,7 @@ const mydb = makeDb(config);
 
 app.use(serveStatic("assets/dist"));
 var port = process.env.PORT || 8080;
-var hostname = "127.0.0.1";
+var hostname = "localhost";
 
 // /get-current-question?pin=953353&boardID=10
 app.get("/get-current-question", (req, res) => {
@@ -109,7 +108,7 @@ app.get("/cancel", (req, res) => {
 
 app.post("/cancel", (req, res) => {
   console.log("cancel post request received");
-  console.log(req.protocol + '://' + req.get('host') + req.originalUrl)
+  console.log(req.protocol + "://" + req.get("host") + req.originalUrl);
   try {
     console.log("cancel request received");
     console.log("PIN", req.query.pin);
@@ -135,9 +134,9 @@ app.post("/submit-quiz", jsonParser, (req, res) => {
       console.log("guiz submitted");
       console.log(req.body.answers);
       const correctAnswers = await mydb.query(
-        "SELECT CA FROM questions WHERE quizID IN (SELECT quizID FROM activeQuiz WHERE Pin=" +
+        "SELECT CA FROM questions WHERE quizID IN (SELECT quizID FROM leaderboard WHERE boardID IN (SELECT boardID FROM activeQuiz WHERE Pin=" +
           mysql.escape(req.body.pin) +
-          ")"
+          "))"
       );
       console.log(correctAnswers);
       var answers = req.body.answers;
@@ -234,8 +233,8 @@ app.get("/quiz-questions", function (req, res) {
 
       //Save team into activeQuiz
       await mydb.query(
-        "INSERT INTO activeQuiz (Pin, boardID,TeamName,quizID,activeQuestion) VALUES ?",
-        [[[pin, boardID, req.query.teamName, req.query.quizID, -1]]]
+        "INSERT INTO activeQuiz (Pin, boardID,activeQuestion) VALUES ?",
+        [[[pin, boardID, -1]]]
       );
 
       //generate questions list
@@ -255,7 +254,6 @@ app.get("/quiz-questions", function (req, res) {
           A2: row.A2,
           A3: row.A3,
           A4: row.A4,
-          CA: row.CA,
         };
         o[listKey].push(data);
       });
@@ -275,13 +273,17 @@ app.get("/join-game", (req, res) => {
 
       //Teamname
       const selectRows = await mydb.query(
-        "SELECT boardID, TeamName, activeQuestion FROM activeQuiz WHERE Pin=" +
+        "SELECT boardID, activeQuestion FROM activeQuiz WHERE Pin=" +
           mysql.escape(req.query.pin)
       );
       console.log(selectRows);
       if (selectRows[0] != null) {
+        const nameResult = await mydb.query(
+          "SELECT TeamName FROM leaderboard WHERE boardID=" +
+            mysql.escape(selectRows[0].boardID)
+        );
         var nameKey = "teamName";
-        o[nameKey] = selectRows[0].TeamName;
+        o[nameKey] = nameResult[0].TeamName;
         var idKey = "boardID";
         o[idKey] = selectRows[0].boardID;
         var aqKey = "activeQuestion";
@@ -290,9 +292,9 @@ app.get("/join-game", (req, res) => {
         var listKey = "list";
         o[listKey] = []; // empty Array, which you can push() values into
         const select2Rows = await mydb.query(
-          "SELECT * FROM questions WHERE quizID IN (SELECT quizID FROM activeQuiz WHERE Pin=" +
+          "SELECT * FROM questions WHERE quizID IN (SELECT quizID FROM leaderboard WHERE boardID IN (SELECT boardID FROM activeQuiz WHERE Pin=" +
             mysql.escape(req.query.pin) +
-            ")"
+            "))"
         );
         //console.log(selectRows);
 
@@ -307,7 +309,6 @@ app.get("/join-game", (req, res) => {
             A2: row.A2,
             A3: row.A3,
             A4: row.A4,
-            CA: row.CA,
           };
           o[listKey].push(data);
         });
@@ -377,28 +378,6 @@ app.get("/get-leaderboard", (req, res) => {
         };
         o[listKey].push(quiz);
       }
-
-      /*var quizKey;
-        var count = 0;
-        var prevID = 1;
-        Object.keys(selectRows).forEach(function (key) {
-           var row = selectRows[key];
-           //console.log(row)
-           if (prevID != row.quizID) {
-              quizKey = "quiz" + row.quizID;
-              o[quizKey] = [];
-              prevID = row.quizID;
-              count = 0;
-           }
-           if (count < 3) {
-              var data = {
-                 TeamName: row.TeamName,
-                 score: row.score
-              };
-              o[quizKey].push(data);
-              count++;
-           }
-        });*/
       res.json(o);
     })();
   } catch (err) {
@@ -414,12 +393,6 @@ app.get("/*", function (req, res) {
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
-  const start = Date.now();
-  console.log("Start time", start);
-
-  cron.schedule("* * * * *", () => {
-    console.log("running a task every day");
-  });
 
   (async () => {
     const result1 = await mydb.query("CREATE DATABASE IF NOT EXISTS mydb");
@@ -441,6 +414,15 @@ app.listen(port, hostname, () => {
       );
       //console.log(result4)
       console.log("Table quiz-list created");
+
+      //init Quiz from file
+      var data = JSON.parse(
+        fs.readFileSync("assets/static-json/dummy_list_of_quizzes.json")
+      );
+      var quizek = [];
+      for (var i in data.list)
+        quizek.push([data.list[i].title, data.list[i].description]);
+
       const result5 = await mydb.query(
         "INSERT INTO quizList (name,description) VALUES ?",
         [quizek]
@@ -458,6 +440,24 @@ app.listen(port, hostname, () => {
       );
       //console.log(result7)
       console.log("Table questions created");
+
+      //init Questions from file
+      var data = JSON.parse(
+        fs.readFileSync("assets/static-json/dummy_questions.json")
+      );
+      var kerdesek = [];
+      for (var i in data.list)
+        kerdesek.push([
+          data.list[i].quizID,
+          data.list[i].layoutID,
+          data.list[i].question,
+          data.list[i].A1,
+          data.list[i].A2,
+          data.list[i].A3,
+          data.list[i].A4,
+          data.list[i].correct,
+        ]);
+
       const result8 = await mydb.query(
         "INSERT INTO questions (quizID,layoutID,question,A1,A2,A3,A4,CA) VALUES ?",
         [kerdesek]
@@ -471,7 +471,7 @@ app.listen(port, hostname, () => {
     //console.log(result[0].namesCount);
     if (result9[0].namesCount == 0) {
       const result10 = await mydb.query(
-        "CREATE TABLE activeQuiz (Pin INT PRIMARY KEY, boardID INT, TeamName VARCHAR(255), quizID INT, activeQuestion INT)"
+        "CREATE TABLE activeQuiz (Pin INT PRIMARY KEY, boardID INT, activeQuestion INT)"
       );
       console.log("Table activeQuiz created");
     }
@@ -491,80 +491,6 @@ app.listen(port, hostname, () => {
     //await mydb.query("INSERT INTO activeQuiz (Pin,teamName,quizID,activeQuestion) VALUES ?", [[[123456, "ASD", 1, 0]]]);
   })();
 });
-
-var quizek = [
-  ["Demo quiz 1", "Ez egy szemléltető quiz. Ez az első szemléltető quiz"],
-  ["Demo quiz 2", "Ez egy szemléltető quiz. Ez a második szemléltető quiz"],
-  ["Vonatos quiz", "A quiz néhány ikonikus MÁV mozdonyhoz kapcsolódik."],
-];
-
-//layoutID: 0:choice, 1:true-false, 2:numeric
-//CA (correct answer): 1,2,3,4
-
-var kerdesek = [
-  [
-    1,
-    0,
-    "Mikor kapta a nevét a MOGI tanszéket?",
-    "1957",
-    "2000",
-    "1985",
-    "2007",
-    4,
-  ],
-  [1, 1, "A gyógysör segít?", null, null, null, null, 1],
-  [1, 2, "Hány lába van egy tapírnak?", null, null, null, null, 4],
-  [
-    2,
-    0,
-    "Zene nélkül mit érek én?",
-    "én",
-    "én",
-    "én",
-    "Csontfájdító dzsúsz",
-    4,
-  ],
-  [
-    2,
-    1,
-    "Igaz-e a következő állítás? A tyúk előbb volt, mint a tojás.",
-    null,
-    null,
-    null,
-    null,
-    1,
-  ],
-  [
-    2,
-    2,
-    "Melyik évben született mindenki közös példaképe, Schmuck Andor?",
-    null,
-    null,
-    null,
-    null,
-    1970,
-  ],
-  [
-    3,
-    0,
-    "Melyik a legfiatalabb MÁV dízelmozdony?",
-    "Taurus",
-    "Szili",
-    "Traxx",
-    "Gigant",
-    3,
-  ],
-  [
-    3,
-    2,
-    "Összesen hány évnyit késtek a MÁV járatok 2018-ban?",
-    null,
-    null,
-    null,
-    null,
-    4,
-  ],
-];
 
 var csapatok = [
   [12, "Team1", 1, 20],

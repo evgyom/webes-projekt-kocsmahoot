@@ -36,9 +36,16 @@ export default {
       console.log(err);
     }
   },
+  mounted() {
+    //Register event listener
+    window.addEventListener("beforeunload", this.onClose);
+  },
+  beforeUnmount() {
+    window.removeEventListener("beforeunload", this.onClose);
+  },
   async beforeRouteLeave(to, from, next) {
     console.log(to.path);
-    if (to.path == "/question") {
+    if (to.path == "/question" || to.path == "/show-result") {
       next();
     } else {
       const answer = window.confirm("Do you really want to leave?");
@@ -62,9 +69,18 @@ export default {
       }
     }
   },
+  methods: {
+    onClose(e) {
+      //fetch(baseUrl + "/cancel?pin=" + String(this.PIN), {method: "POST"});
+      navigator.sendBeacon(baseUrl + "/cancel?pin=" + String(this.PIN));
+
+      // the absence of a returnValue property on the event will guarantee the browser unload happens
+      delete e["returnValue"];
+    },
+  },
 };
 </script>
 
 
-<style>
+<style scoped>
 </style>

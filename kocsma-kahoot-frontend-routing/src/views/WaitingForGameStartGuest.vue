@@ -2,19 +2,19 @@
   <div id="holder">
     <h2>Waiting for the game to start.</h2>
     <h3>PIN: {{ this.$store.getters.getPIN }}</h3>
-    <h3>Team name: {{this.$store.getters.getTeamName}}</h3>
+    <h3>Team name: {{ this.$store.getters.getTeamName }}</h3>
     <div id="spinner-holder">
       <half-circle-spinner
         id="spinner"
         :animation-duration="1000"
         :size="120"
-        :color="'#000000'"
+        :color="'#D6D6D6'"
       />
     </div>
-    <h3>{{ this.statusText }}</h3>
-    <div>
+    <h3 id="status-text">{{ this.statusText }}</h3>
+    <div id="buttons-holder">
       <button id="button-refresh" @click="refresh">Refresh</button>
-      <button id="button-cancel" @click="navigateBack">Cancel</button>
+      <button id="button-cancel" class="cancel-button" @click="navigateBack">Cancel</button>
     </div>
   </div>
 </template>
@@ -42,7 +42,7 @@ export default {
         next();
       } else {
         next(false);
-      }
+      };
     }
   },
   methods: {
@@ -99,17 +99,10 @@ export default {
 </script>
 
 <style scoped>
-#holder {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
-
 #spinner-holder {
   display: block;
   width: 50%;
-  height: 200px;
+  height: 165px;
   margin: auto;
 }
 
@@ -119,20 +112,24 @@ export default {
   margin: auto;
 }
 
-#button-cancel {
-  display: block;
+#buttons-holder {
+  display: flex;
   margin: auto;
-  width: 8%;
-  min-width: 100px;
-  font-size: 30px;
+  margin-bottom: 50px;
+  width: 20%;
+  justify-content: center;
 }
 
-#button-refresh {
-  display: block;
+button {
   margin: auto;
-  background-color: navy;
-  width: 8%;
-  min-width: 100px;
   font-size: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
+  min-width: 120px;
 }
+
+#status-text {
+  margin-top: 0;
+}
+
 </style>

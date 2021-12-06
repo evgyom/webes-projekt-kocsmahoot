@@ -5,7 +5,9 @@
     <div id="pin-enter-form">
       <div>
         <input type="text" v-model="this.PIN" />
-        <button @click="goButtonPushed">GO!</button>
+        <button id=go-button class="start-game-button" @click="goButtonPushed">
+          GO!
+        </button>
       </div>
     </div>
     <p>You can get the game-PIN from the admin of your team.</p>
@@ -30,6 +32,7 @@ export default {
         console.log("Requesting:" + request);
         const response = await fetch(request);
         const message = await response.json();
+        console.log("Response to join-game", message)
         if (message.validPin == 1) {
           //Store the questions in vuex
           this.$store.commit("loadQuestions", message.list);
@@ -57,7 +60,6 @@ export default {
 <style scoped>
 #enter-pin-component {
   margin-bottom: 30px;
-  padding-top: 50px;
   padding-bottom: 50px;
 }
 
@@ -70,35 +72,5 @@ export default {
 #pin-enter-form div {
   display: flex;
   justify-content: center;
-}
-
-input {
-  flex: 5;
-  height: 100px;
-  width: 500px;
-  font-size: 80px;
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-right: 10px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-button {
-  flex: 1;
-  height: 100px;
-  min-width: 150px;
-  font-size: 50px;
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  background-color: darkred;
-  text-align: center;
-}
-
-a {
-  color: white;
 }
 </style>

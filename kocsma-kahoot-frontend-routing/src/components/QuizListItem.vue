@@ -2,7 +2,7 @@
   <div class="quiz-list-item">
     <div>
       <p id="title">{{ title }}</p>
-      <button id="desc-button" @click="ToggleShowDescription">
+      <button id="desc-button" class="cancel-button" @click="ToggleShowDescription">
         {{ ShowDescriptionText }}
       </button>
       <button id="start-button" @click="saveQuizID">
@@ -50,8 +50,9 @@ export default {
 
 <style scoped>
 .quiz-list-item {
-  background-color: lightgrey;
-  border-color: white;
+  background-color: #D6D6D6;
+  border-color: #D6D6D6;
+  color: #00003D;
   border-width: 2px;
   display: block;
   width: 70%;
@@ -68,20 +69,12 @@ export default {
 }
 
 button {
-  height: 50px;
-  min-width: 250px;
+  min-height: 50px;
+  min-width: 130px;
   font-size: 20px;
   flex: 2;
   margin-right: 10px;
   margin-left: 10px;
-}
-
-#start-button {
-  background-color: darkred;
-}
-
-#start-button a {
-  color: white;
 }
 
 #title {

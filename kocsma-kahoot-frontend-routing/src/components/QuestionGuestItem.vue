@@ -113,7 +113,9 @@ export default {
     inputQuestions: { required: true },
   },
   created() {
+    console.log("props question",this.$props.inputQuestions);
     this.questions = this.$props.inputQuestions;
+    console.log("local questions", this.questions)
     this.noOfQuestions = this.questions.length;
     this.refresh();
   },
@@ -184,16 +186,17 @@ export default {
   display: flex;
   justify-self: center;
   justify-content: center;
-  margin-left: 100px;
-  margin-right: 100px;
+  margin-left: 50px;
+  margin-right: 50px;
 }
 
 .option-label {
   border-style: solid;
-  border-color: lightgrey;
+  border-color: #D6D6D6;
   border-width: 20px;
   border-radius: 5px;
-  background: lightgrey;
+  background: #D6D6D6;
+  color: #00003D;
 }
 
 .option-text {
@@ -205,7 +208,7 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked + span {
-  color: darkred;
+  color: #3BBA94;
   font-weight: bold;
 }
 
@@ -214,16 +217,20 @@ input[type="radio"]:checked + span {
   margin: auto;
   width: 20%;
   justify-content: center;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 30px;
 }
 
 #refresh-button {
-  display: block;
-  margin: 30px auto;
+  margin-top: 0;
+  margin-bottom: 30px;
   min-width: 200px;
   font-size: 30px;
   margin-left: 10px;
   margin-right: 10px;
-  background-color: darkred;
-  justify-self: center;
+  margin-bottom: 30px;
+  justify-self: center
 }
 </style>
