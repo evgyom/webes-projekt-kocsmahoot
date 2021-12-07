@@ -31,14 +31,11 @@ export default {
     return {
       loadingText: "Loading available quizzes...",
       loaded: false,
-      post: null,
-      error: null,
       listOfQuizzes: null,
     };
   },
   created() {
-    // fetch the data when the view is created and the data is
-    // already being observed
+    //Load data, when the view is created
     this.fetchData();
   },
   methods: {
@@ -47,8 +44,6 @@ export default {
         const response = await fetch(baseUrl + "/quiz-list");
         const message = await response.json();
         this.listOfQuizzes = message.list;
-        console.log("LIST OF QUIZZES");
-        console.log(this.listOfQuizzes);
         this.loaded = true;
       } catch (err) {
         this.loadingText = "Can't load quiz list. Drink a beer instead!";

@@ -31,7 +31,7 @@
 * `node  server`
 
 ### összekötés a frontenddel
-* az assets/dist mappa helyére kell berkani a legfrissebb frontend fájlokat
+* az assets/dist mappa helyére kell berkani a legfrissebb frontend fájlokat (az egész dist mappát kell kicserélni)
 
 
 ## Kommunikáció
@@ -84,13 +84,3 @@ Minden request egy get
 * /get-leaderboard
     * az összes eddigi eredményt elkéri
     * szerver visszaadja: nagy json
-
-## Megoldandó szarságok
-* a vissza gombra néha jobb lenne, ha máshova menne vissza (pl. nem az enter)
-* cancel request-et küldeni, amikor bezár az oldal. most csak az megy, hogy a "Are you sure you want to leave the page?" promptra elküldjük a cancel requestet
-
-## Galó feladat:
-- style-ok harmonozálása
-- button elhelyezések fixálása (Guest screenen)
-- button színek. minden cancel / refresh button azonos színű
-- átméretezéskor ne legyen annyira ronda

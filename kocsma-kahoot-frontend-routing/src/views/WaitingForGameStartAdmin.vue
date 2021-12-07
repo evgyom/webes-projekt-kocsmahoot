@@ -73,7 +73,6 @@ export default {
     window.removeEventListener("beforeunload", this.onClose);
   },
   async beforeRouteLeave(to, from, next) {
-    console.log(to.path);
     if (to.path == "/question") {
       next();
     } else {
@@ -132,7 +131,6 @@ export default {
     onClose(e) {
       //fetch(baseUrl + "/cancel?pin=" + String(this.PIN), {method: "POST"});
       navigator.sendBeacon(baseUrl + "/cancel?pin=" + String(this.PIN))
-
       // the absence of a returnValue property on the event will guarantee the browser unload happens
       delete e["returnValue"];
     },

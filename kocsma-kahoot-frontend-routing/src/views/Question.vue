@@ -24,12 +24,14 @@ export default {
       post: null,
       error: null,
       questions: null,
+      PIN: null
     };
   },
   created() {
     //Load questions from Vuex
     try {
       this.questions = this.$store.getters.getQuestions;
+      this.PIN = this.$store.getters.getPIN;
       this.loaded = true;
     } catch (err) {
       this.loadingText = "Can't load questions. Drink a beer instead!";
